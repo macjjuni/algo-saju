@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { createProfileAction, updateProfileAction } from "@/app/profile/actions";
-import type { CreateProfileRequest } from "@/lib/profile-api";
-import type { BirthFormValues } from "@/lib/schema";
-import GlassPanel from "@/components/ui/glass-panel";
-import ProfileForm from "./profile-form";
+import { useRouter } from 'next/navigation'
+import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
+import type { CreateProfileRequest } from '@/lib/profile-api'
+import type { BirthFormValues } from '@/lib/schema'
+import GlassPanel from '@/components/ui/glass-panel'
+import ProfileForm from './profile-form'
 
 interface ProfileFormPageProps {
   title: string;
@@ -16,26 +16,27 @@ interface ProfileFormPageProps {
 
 export default function ProfileFormPage({ title, defaultValues, profileId, submitLabel }: ProfileFormPageProps) {
   // region [Hooks]
-  const router = useRouter();
+  const router = useRouter()
   // endregion
 
   // region [Events]
   async function onSubmit(data: CreateProfileRequest) {
     if (profileId) {
-      await updateProfileAction(profileId, data);
+      await updateProfileAction(profileId, data)
     } else {
-      await createProfileAction(data);
+      await createProfileAction(data)
     }
-    router.push("/profile");
+    router.push('/profile')
   }
+
   // endregion
 
   return (
-    <div className="mx-auto max-w-2xl py-8 px-4">
-      <GlassPanel>
+    <GlassPanel>
+      <div className="max-w-lg mx-auto">
         <h1 className="mb-6 text-center text-2xl font-bold">{title}</h1>
-        <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel} />
-      </GlassPanel>
-    </div>
-  );
+        <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel}/>
+      </div>
+    </GlassPanel>
+  )
 }
