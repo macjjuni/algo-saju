@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import QueryProvider from "@/providers/query-provider";
 import SessionProvider from "@/providers/session-provider";
-import BackendAuthProvider from "@/providers/backend-auth-provider";
 import { Header, Content, Footer } from "@/components/layout";
 import Starfield from "@/components/background/starfield";
 import "./globals.css";
@@ -25,13 +24,11 @@ export default async function RootLayout({
         <Starfield />
         <SessionProvider session={session}>
           <QueryProvider>
-            <BackendAuthProvider>
-              <div className="flex min-h-dvh flex-col">
-                <Header />
-                <Content>{children}</Content>
-                <Footer />
-              </div>
-            </BackendAuthProvider>
+            <div className="flex min-h-dvh flex-col">
+              <Header isAuthenticated={!!session} />
+              <Content>{children}</Content>
+              <Footer />
+            </div>
           </QueryProvider>
         </SessionProvider>
       </body>
