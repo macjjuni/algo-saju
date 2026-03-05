@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { City } from "@orrery/core";
 import { birthFormSchema, type BirthFormValues } from "@/lib/schema";
-import type { CreateProfileRequest } from "@/lib/profile-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +18,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CityPicker from "./city-picker";
+import { CreateProfileRequest } from '@/api/profile'
 
 // region [Privates]
 const CURRENT_YEAR = new Date().getFullYear();

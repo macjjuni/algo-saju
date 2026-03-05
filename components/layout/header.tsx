@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import useScrollDirection from "@/hooks/use-scroll-direction";
 import AuthButton from "./auth-button";
 
@@ -11,6 +12,7 @@ interface HeaderProps {
 export default function Header({ isAuthenticated }: HeaderProps) {
   // region [Hooks]
   const isHidden = useScrollDirection();
+  const pathname = usePathname();
   // endregion
 
   return (
@@ -23,9 +25,14 @@ export default function Header({ isAuthenticated }: HeaderProps) {
         </Link>
         <nav className="ml-auto flex items-center gap-4">
           {isAuthenticated && (
-            <Link href="/profile" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              프로필 관리
-            </Link>
+            <>
+              <Link href="/fortune" className={`text-sm transition-colors ${pathname.startsWith('/fortune') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
+                운세 보기
+              </Link>
+              <Link href="/profile" className={`text-sm transition-colors ${pathname.startsWith('/profile') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
+                프로필 관리
+              </Link>
+            </>
           )}
           <AuthButton />
         </nav>

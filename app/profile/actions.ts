@@ -9,7 +9,7 @@ import {
   deleteProfile,
   type CreateProfileRequest,
   type UpdateProfileRequest,
-} from "@/lib/profile-api";
+} from "@/api/profile";
 
 export async function analyzeProfile(data: BirthFormValues) {
   const parsed = birthFormSchema.safeParse(data);

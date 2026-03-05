@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { getProfile } from "@/lib/profile-api";
+import { getProfile } from "@/api/profile";
 import ProfileFormPage from "@/components/profile/profile-form-page";
 
 export const metadata = {

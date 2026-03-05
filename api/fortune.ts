@@ -11,9 +11,11 @@ export interface FortuneResponse {
 }
 
 export interface PromptTemplate {
-  id: number;
-  name: string;
+  promptTemplateId: number;
+  title: string;
   description: string;
+  isSolo: boolean;
+  parentId: string;
 }
 
 export interface Category {
@@ -33,9 +35,11 @@ export async function requestFortune(token: string, body: FortuneRequest): Promi
 }
 
 export async function getTemplates(c: string): Promise<PromptTemplate[]> {
-  return apiClient<PromptTemplate[]>(`/api/v1/fortune/templates?c=${c}`);
+  const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`);
+  return res.templates;
 }
 
 export async function getCategories(): Promise<Category[]> {
-  return apiClient<Category[]>("/api/v1/fortune/categories");
+  const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories");
+  return res.categories;
 }

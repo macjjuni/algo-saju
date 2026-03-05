@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
-import type { CreateProfileRequest } from '@/lib/profile-api'
+import type { CreateProfileRequest } from '@/api/profile'
 import type { BirthFormValues } from '@/lib/schema'
 import GlassPanel from '@/components/ui/glass-panel'
 import ProfileForm from './profile-form'

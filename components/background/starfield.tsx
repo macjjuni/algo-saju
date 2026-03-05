@@ -13,6 +13,16 @@ interface Star {
   color: [number, number, number];
 }
 
+interface Comet {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  length: number;
+  opacity: number;
+  size: number;
+}
+
 const STAR_COLORS: [number, number, number][] = [
   [255, 255, 255],     // white
   [200, 180, 255],     // light purple
@@ -35,6 +45,8 @@ export default function Starfield() {
 
     let animationId: number;
     let stars: Star[] = [];
+    let comets: Comet[] = [];
+    let lastCometTime = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -58,8 +70,63 @@ export default function Starfield() {
       }));
     };
 
+    const spawnComet = () => {
+      const angle = (Math.random() * 20 + 25) * (Math.PI / 180); // 25~45도
+      const speed = Math.random() * 8 + 10;
+      comets.push({
+        x: Math.random() * canvas.width * 0.7,
+        y: Math.random() * canvas.height * 0.3,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: Math.random() * 120 + 80,
+        opacity: Math.random() * 0.5 + 0.5,
+        size: Math.random() * 1.5 + 0.5,
+      });
+    };
+
+    const drawComets = () => {
+      comets = comets.filter((comet) => {
+        const tailX = comet.x - (comet.vx / Math.hypot(comet.vx, comet.vy)) * comet.length;
+        const tailY = comet.y - (comet.vy / Math.hypot(comet.vx, comet.vy)) * comet.length;
+
+        const gradient = ctx.createLinearGradient(tailX, tailY, comet.x, comet.y);
+        gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
+        gradient.addColorStop(0.7, `rgba(200, 180, 255, ${comet.opacity * 0.4})`);
+        gradient.addColorStop(1, `rgba(255, 255, 255, ${comet.opacity})`);
+
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(comet.x, comet.y);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = comet.size;
+        ctx.lineCap = "round";
+        ctx.stroke();
+
+        // 머리 글로우
+        const glowGradient = ctx.createRadialGradient(comet.x, comet.y, 0, comet.x, comet.y, comet.size * 4);
+        glowGradient.addColorStop(0, `rgba(255, 255, 255, ${comet.opacity * 0.8})`);
+        glowGradient.addColorStop(1, `rgba(200, 180, 255, 0)`);
+        ctx.beginPath();
+        ctx.arc(comet.x, comet.y, comet.size * 4, 0, Math.PI * 2);
+        ctx.fillStyle = glowGradient;
+        ctx.fill();
+
+        comet.x += comet.vx;
+        comet.y += comet.vy;
+
+        return comet.x < canvas.width + comet.length && comet.y < canvas.height + comet.length;
+      });
+    };
+
     const draw = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 혜성 스폰: 4~10초 간격
+      if (time - lastCometTime > Math.random() * 6000 + 4000) {
+        spawnComet();
+        lastCometTime = time;
+      }
+      drawComets();
 
       for (const star of stars) {
         const twinkle = Math.sin(time * star.twinkleSpeed + star.twinkleOffset);

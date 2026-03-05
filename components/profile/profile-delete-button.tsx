@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 import { deleteProfileAction } from "@/app/profile/actions";
 import { Button } from "@/components/ui/button";
 
@@ -20,11 +21,11 @@ export default function ProfileDeleteButton({ id }: { id: string }) {
   return (
     <Button
       variant="ghost"
-      size="sm"
-      className="text-destructive hover:text-destructive"
+      size="icon"
+      className="h-8 w-8 text-destructive hover:text-destructive"
       onClick={onClick}
     >
-      삭제
+      <Trash2 className="h-4 w-4" />
     </Button>
   );
 }
