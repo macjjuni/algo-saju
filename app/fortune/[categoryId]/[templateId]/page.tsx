@@ -1,0 +1,44 @@
+import { notFound, redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
+import { getTemplates } from '@/api/fortune'
+import { getProfiles } from '@/api/profile'
+import GlassPanel from '@/components/ui/glass-panel'
+import FortuneAnalyzer from '@/components/fortune/fortune-analyzer'
+
+export const metadata = {
+  title: '운세 분석 - algo-saju',
+}
+
+interface Props {
+  params: Promise<{ categoryId: string; templateId: string }>
+}
+
+export default async function FortuneAnalyzePage({ params }: Props) {
+  const session = await auth()
+  if (!session?.backendToken) redirect('/login')
+
+  const { categoryId, templateId } = await params
+  const templateIdNum = Number(templateId)
+  if (isNaN(templateIdNum)) notFound()
+
+  let templates
+  try {
+    templates = await getTemplates(categoryId)
+  } catch {
+    notFound()
+  }
+
+  const exists = templates.some((t) => t.promptTemplateId === templateIdNum)
+  if (!exists) notFound()
+
+  const profiles = await getProfiles(session.backendToken)
+
+  return (
+    <GlassPanel>
+      <div className="max-w-xl mx-auto">
+        <h1 className="mb-6 text-2xl font-bold">운세 분석</h1>
+        <FortuneAnalyzer profiles={profiles} templateId={templateIdNum} />
+      </div>
+    </GlassPanel>
+  )
+}
