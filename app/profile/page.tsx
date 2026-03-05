@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { UserRound, Pencil } from 'lucide-react'
 import { auth } from '@/lib/auth'
 import { getProfiles } from '@/api/profile'
@@ -26,9 +25,7 @@ function formatBirth(p: {
 
 export default async function ProfileListPage() {
   const session = await auth()
-  if (!session?.backendToken) redirect('/login')
-
-  const profiles = await getProfiles(session.backendToken)
+  const profiles = await getProfiles(session!.backendToken!)
 
   return (
     <GlassPanel>

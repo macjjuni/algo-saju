@@ -34,12 +34,16 @@ export async function requestFortune(token: string, body: FortuneRequest): Promi
   });
 }
 
-export async function getTemplates(c: string): Promise<PromptTemplate[]> {
-  const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`);
+export async function getTemplates(token: string, c: string): Promise<PromptTemplate[]> {
+  const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`, {
+    headers: authHeaders(token),
+  });
   return res.templates;
 }
 
-export async function getCategories(): Promise<Category[]> {
-  const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories");
+export async function getCategories(token: string): Promise<Category[]> {
+  const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories", {
+    headers: authHeaders(token),
+  });
   return res.categories;
 }

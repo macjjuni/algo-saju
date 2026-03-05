@@ -1,3 +1,4 @@
+import { auth } from '@/lib/auth'
 import { getCategories } from '@/api/fortune'
 import GlassPanel from '@/components/ui/glass-panel'
 import CategoryGrid from '@/components/fortune/category-grid'
@@ -7,7 +8,8 @@ export const metadata = {
 }
 
 export default async function FortunePage() {
-  const categories = await getCategories()
+  const session = await auth()
+  const categories = await getCategories(session!.backendToken!)
 
   return (
     <GlassPanel>

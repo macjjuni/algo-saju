@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { getTemplates } from '@/api/fortune'
 import { getProfiles } from '@/api/profile'
@@ -15,7 +15,6 @@ interface Props {
 
 export default async function FortuneAnalyzePage({ params }: Props) {
   const session = await auth()
-  if (!session?.backendToken) redirect('/login')
 
   const { categoryId, templateId } = await params
   const templateIdNum = Number(templateId)
@@ -23,7 +22,7 @@ export default async function FortuneAnalyzePage({ params }: Props) {
 
   let templates
   try {
-    templates = await getTemplates(categoryId)
+    templates = await getTemplates(session!.backendToken!, categoryId)
   } catch {
     notFound()
   }
@@ -31,7 +30,7 @@ export default async function FortuneAnalyzePage({ params }: Props) {
   const exists = templates.some((t) => t.promptTemplateId === templateIdNum)
   if (!exists) notFound()
 
-  const profiles = await getProfiles(session.backendToken)
+  const profiles = await getProfiles(session!.backendToken!)
 
   return (
     <GlassPanel>
