@@ -4,6 +4,7 @@ import QueryProvider from "@/providers/query-provider";
 import SessionProvider from "@/providers/session-provider";
 import BackendAuthProvider from "@/providers/backend-auth-provider";
 import { Header, Content, Footer } from "@/components/layout";
+import Starfield from "@/components/background/starfield";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,11 +21,12 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className="antialiased">
+      <body className="antialiased bg-black text-white">
+        <Starfield />
         <SessionProvider session={session}>
           <QueryProvider>
             <BackendAuthProvider>
-              <div className="flex min-h-svh flex-col">
+              <div className="flex min-h-dvh flex-col">
                 <Header />
                 <Content>{children}</Content>
                 <Footer />

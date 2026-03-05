@@ -1,6 +1,7 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/button";
 
@@ -11,10 +12,6 @@ export default function AuthButton() {
   // endregion
 
   // region [Events]
-  function onClickLogin() {
-    signIn("google");
-  }
-
   function onClickLogout() {
     setAccessToken(null);
     signOut();
@@ -32,8 +29,8 @@ export default function AuthButton() {
   }
 
   return (
-    <Button variant="ghost" size="sm" onClick={onClickLogin}>
-      로그인
+    <Button variant="ghost" size="sm" asChild>
+      <Link href="/login">로그인</Link>
     </Button>
   );
 }

@@ -6,7 +6,7 @@ export const metadata = {
 
 export default function ProfilePage() {
   return (
-    <main className="min-h-screen bg-background py-8 px-4">
+    <main className="h-full bg-background py-8 px-4">
       <div className="mx-auto max-w-lg">
         <h1 className="mb-6 text-center text-2xl font-bold">프로필 작성</h1>
         <ProfileForm />
