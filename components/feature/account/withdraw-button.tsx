@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { withdrawAction } from "@/app/account/withdraw/actions";
+import { withdrawAction, signOutAction } from "@/app/account/withdraw/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,7 +27,9 @@ export default function WithdrawButton() {
     } catch {
       alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
       setPending(false);
+      return;
     }
+    await signOutAction();
   }
   // endregion
 
@@ -39,8 +41,9 @@ export default function WithdrawButton() {
       <DialogContent showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>정말 탈퇴하시겠습니까?</DialogTitle>
-          <DialogDescription>
-            탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.
+          <DialogDescription className="space-y-1">
+            <span>탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.</span>
+            <span className="block text-destructive">탈퇴 후 24시간 동안 재가입이 불가합니다.</span>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

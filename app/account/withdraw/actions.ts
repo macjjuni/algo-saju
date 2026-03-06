@@ -8,5 +8,8 @@ export async function withdrawAction() {
   if (!session?.backendToken) throw new Error("인증이 필요합니다.");
 
   await deleteMe(session.backendToken);
-  await signOut({ redirectTo: "/login" });
+}
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
 }
