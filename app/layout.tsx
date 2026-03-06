@@ -10,10 +10,42 @@ import GoogleAnalytics from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "algo-saju";
+const siteUrl = "https://www.algo-saju.com";
+const description =
+  "태어난 순간의 사주를 AI 알고리즘으로 분석합니다. 연애운, 재물운, 건강운 등 다양한 운세를 무료로 확인하세요.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: { default: appName, template: `%s - ${appName}` },
-  description: `${appName} community`,
+  description,
+  keywords: [
+    "사주",
+    "운세",
+    "AI 운세",
+    "사주팔자",
+    "연애운",
+    "재물운",
+    "궁합",
+    "오늘의 운세",
+    "무료 운세",
+    "알고리즘 사주",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: appName,
+    title: `${appName} - AI 기반 사주 운세 분석`,
+    description,
+    url: siteUrl,
+    locale: "ko_KR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${appName} - AI 기반 사주 운세 분석`,
+    description,
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default async function RootLayout({
