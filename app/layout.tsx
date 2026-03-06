@@ -5,6 +5,7 @@ import SessionProvider from "@/providers/session-provider";
 import { Header, Content, Footer } from "@/components/layout";
 import Starfield from "@/components/background/starfield";
 import FortuneLoadingOverlay from "@/components/feature/fortune/loading-overlay";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "algo-saju";
@@ -33,6 +34,7 @@ export default async function RootLayout({
               <Footer />
             </div>
             <FortuneLoadingOverlay />
+            <Toaster />
           </QueryProvider>
         </SessionProvider>
       </body>
