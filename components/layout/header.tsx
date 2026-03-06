@@ -26,7 +26,7 @@ export default function Header({ isAuthenticated }: HeaderProps) {
         <nav className="ml-auto flex items-center gap-4">
           {isAuthenticated && (
             <>
-              <Link href="/fortune" className={`text-sm transition-colors ${pathname.startsWith('/fortune') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
+              <Link href="/category" className={`text-sm transition-colors ${pathname.startsWith('/category') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
                 운세 보기
               </Link>
               <Link href="/profile" className={`text-sm transition-colors ${pathname.startsWith('/profile') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>

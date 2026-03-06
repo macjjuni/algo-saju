@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { UserRound } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import { Button } from '@/components/ui/button'
-import { analyzeFortuneAction } from '@/app/fortune/[categoryId]/[templateId]/actions'
+import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/actions'
 
 interface FortuneAnalyzerProps {
   profiles: Profile[]

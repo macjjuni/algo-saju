@@ -22,7 +22,7 @@ export default function CategoryNotFound() {
 
         {/* CTA */}
         <Link
-          href="/fortune"
+          href="/category"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-sm font-medium transition-all hover:bg-white/10 hover:border-white/20"
         >
           ← 운세 카테고리로 돌아가기

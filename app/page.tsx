@@ -36,7 +36,7 @@ export default async function Home() {
         )}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href={session ? '/fortune' : '/login'}>지금 시작하기</Link>
+            <Link href={session ? '/category' : '/login'}>지금 시작하기</Link>
           </Button>
         </div>
         <p className="mt-3 text-xs text-white/40">
