@@ -37,11 +37,13 @@ export const metadata: Metadata = {
     description,
     url: siteUrl,
     locale: "ko_KR",
+    images: [{ url: "/opengraph-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${appName} - AI 기반 사주 운세 분석`,
     description,
+    images: ["/opengraph-image.png"],
   },
   alternates: {
     canonical: siteUrl,
