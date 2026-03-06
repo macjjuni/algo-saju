@@ -9,7 +9,10 @@ import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/a
 interface FortuneAnalyzerProps {
   profiles: Profile[]
   templateId: number
+  isSolo: boolean
 }
+
+const MAX_DUO_PROFILES = 2
 
 function formatBirth(p: Profile) {
   const date = `${p.year}.${String(p.month).padStart(2, '0')}.${String(p.day).padStart(2, '0')}`
@@ -17,24 +20,55 @@ function formatBirth(p: Profile) {
   return `${date} ${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`
 }
 
-export default function FortuneAnalyzer({ profiles, templateId }: FortuneAnalyzerProps) {
+export default function FortuneAnalyzer({ profiles, templateId, isSolo }: FortuneAnalyzerProps) {
   // region [Hooks]
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
-    profiles.length === 1 ? profiles[0].id : null
+    isSolo && profiles.length === 1 ? profiles[0].id : null
   )
+  const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   // endregion
 
+  // region [Privates]
+  const isSelected = (id: string) => {
+    if (isSolo) return selectedProfileId === id
+    return selectedProfileIds.includes(id)
+  }
+
+  const canAnalyze = isSolo
+    ? !!selectedProfileId
+    : selectedProfileIds.length === MAX_DUO_PROFILES
+  // endregion
+
   // region [Events]
+  const handleSelectSolo = (id: string) => {
+    setSelectedProfileId(id)
+  }
+
+  const handleSelectDuo = (id: string) => {
+    setSelectedProfileIds((prev) => {
+      if (prev.includes(id)) return prev.filter((pid) => pid !== id)
+      if (prev.length >= MAX_DUO_PROFILES) return prev
+      return [...prev, id]
+    })
+  }
+
+  const handleSelect = (id: string) => {
+    if (isSolo) handleSelectSolo(id)
+    else handleSelectDuo(id)
+  }
+
   const handleAnalyze = async () => {
-    if (!selectedProfileId) return
+    const ids = isSolo ? (selectedProfileId ? [selectedProfileId] : []) : selectedProfileIds
+    if (ids.length === 0) return
+
     setLoading(true)
     setError(null)
     setResult(null)
 
-    const res = await analyzeFortuneAction(selectedProfileId, templateId)
+    const res = await analyzeFortuneAction(ids, templateId)
     setLoading(false)
 
     if ('error' in res) {
@@ -60,36 +94,53 @@ export default function FortuneAnalyzer({ profiles, templateId }: FortuneAnalyze
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="mb-3 text-lg font-semibold">프로필 선택</h2>
+        <h2 className="mb-3 text-lg font-semibold">
+          프로필 선택 {!isSolo && <span className="text-sm font-normal text-muted-foreground">({selectedProfileIds.length}/{MAX_DUO_PROFILES})</span>}
+        </h2>
         <div className="space-y-2">
-          {profiles.map((profile) => (
-            <button
-              key={profile.id}
-              type="button"
-              onClick={() => setSelectedProfileId(profile.id)}
-              className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition-colors ${
-                selectedProfileId === profile.id
-                  ? 'border-white/40 bg-white/15'
-                  : 'border-white/10 bg-white/5 hover:bg-white/10'
-              }`}
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
-                <UserRound className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{profile.name || '이름 없음'}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {formatBirth(profile)} · {profile.gender === 'M' ? '남' : '여'} · {profile.cityName}
-                </p>
-              </div>
-            </button>
-          ))}
+          {profiles.map((profile) => {
+            const selected = isSelected(profile.id)
+            const disabledDuo = !isSolo && !selected && selectedProfileIds.length >= MAX_DUO_PROFILES
+
+            return (
+              <button
+                key={profile.id}
+                type="button"
+                onClick={() => handleSelect(profile.id)}
+                disabled={disabledDuo}
+                className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition-colors ${
+                  selected
+                    ? 'border-white/40 bg-white/15'
+                    : disabledDuo
+                      ? 'border-white/5 bg-white/[0.02] opacity-40 cursor-not-allowed'
+                      : 'border-white/10 bg-white/5 hover:bg-white/10'
+                }`}
+              >
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                  selected ? 'bg-white/20' : 'bg-white/10'
+                }`}>
+                  <UserRound className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium truncate">{profile.name || '이름 없음'}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {formatBirth(profile)} · {profile.gender === 'M' ? '남' : '여'} · {profile.cityName}
+                  </p>
+                </div>
+                {!isSolo && selected && (
+                  <span className="shrink-0 text-xs font-medium text-white/70">
+                    {selectedProfileIds.indexOf(profile.id) + 1}
+                  </span>
+                )}
+              </button>
+            )
+          })}
         </div>
       </div>
 
       <Button
         className="w-full"
-        disabled={!selectedProfileId || loading}
+        disabled={!canAnalyze || loading}
         onClick={handleAnalyze}
       >
         {loading ? '분석 중...' : '분석하기'}

@@ -6,7 +6,7 @@ import GlassPanel from '@/components/ui/glass-panel'
 import FortuneAnalyzer from '@/components/fortune/fortune-analyzer'
 
 export const metadata = {
-  title: '운세 분석 - algo-saju',
+  title: '운세 분석',
 }
 
 interface Props {
@@ -27,8 +27,8 @@ export default async function FortuneAnalyzePage({ params }: Props) {
     notFound()
   }
 
-  const exists = templates.some((t) => t.promptTemplateId === templateIdNum)
-  if (!exists) notFound()
+  const template = templates.find((t) => t.promptTemplateId === templateIdNum)
+  if (!template) notFound()
 
   const profiles = await getProfiles(session!.backendToken!)
 
@@ -36,7 +36,7 @@ export default async function FortuneAnalyzePage({ params }: Props) {
     <GlassPanel>
       <div className="max-w-xl mx-auto">
         <h1 className="mb-6 text-2xl font-bold">운세 분석</h1>
-        <FortuneAnalyzer profiles={profiles} templateId={templateIdNum} />
+        <FortuneAnalyzer profiles={profiles} templateId={templateIdNum} isSolo={template.isSolo} />
       </div>
     </GlassPanel>
   )
