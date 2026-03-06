@@ -33,7 +33,7 @@ export default function LoginForm() {
   // endregion
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md max-w-3xl w-full mx-auto my-auto mt-40 px-8 py-24">
+    <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md max-w-3xl w-full mx-auto my-auto mt-40 max-sm:mt-20 px-8 py-24">
       <div className="flex h-full items-center justify-center">
         <div className="w-full max-w-sm space-y-6 text-center">
           <div className="space-y-2">
