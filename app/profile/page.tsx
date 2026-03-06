@@ -33,7 +33,7 @@ export default async function ProfileListPage() {
   return (
     <GlassPanel>
       <div className="max-w-xl mx-auto">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">프로필 관리</h1>
           <p className="text-sm text-muted-foreground mt-1">{profiles.length} / {MAX_PROFILES}명</p>
