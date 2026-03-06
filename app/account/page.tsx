@@ -1,5 +1,7 @@
 import { auth } from '@/lib/auth'
+import { getMe } from '@/api/auth'
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 
 export const metadata = {
   title: '회원정보',
@@ -7,19 +9,40 @@ export const metadata = {
 
 export default async function AccountPage() {
   const session = await auth()
-  if (!session) redirect('/login')
+  if (!session?.backendToken) redirect('/login')
+
+  const user = await getMe(session.backendToken)
 
   return (
     <div>
       <h1 className="mb-6 text-xl font-bold">회원정보</h1>
       <div className="space-y-4">
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-          <p className="text-xs text-muted-foreground mb-1">이메일</p>
-          <p className="text-sm font-medium">{session.user?.email ?? '-'}</p>
-        </div>
+        {user.image && (
+          <div className="flex justify-center">
+            <Image
+              src={user.image}
+              alt={user.name}
+              width={80}
+              height={80}
+              className="rounded-full"
+            />
+          </div>
+        )}
         <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
           <p className="text-xs text-muted-foreground mb-1">이름</p>
-          <p className="text-sm font-medium">{session.user?.name ?? '-'}</p>
+          <p className="text-sm font-medium">{user.name}</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
+          <p className="text-xs text-muted-foreground mb-1">이메일</p>
+          <p className="text-sm font-medium">{user.email}</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
+          <p className="text-xs text-muted-foreground mb-1">로그인 방식</p>
+          <p className="text-sm font-medium">{user.provider === 'google' ? 'Google' : user.provider}</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
+          <p className="text-xs text-muted-foreground mb-1">오늘의 무료 이용권</p>
+          <p className="text-sm font-medium">{3 - user.usageCount} / 3</p>
         </div>
       </div>
     </div>
