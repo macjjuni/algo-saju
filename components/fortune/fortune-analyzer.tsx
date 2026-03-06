@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from 'react'
-import { UserRound } from 'lucide-react'
+import Link from 'next/link'
+import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import { Button } from '@/components/ui/button'
 import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/actions'
@@ -82,10 +83,10 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
   if (profiles.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 py-16 text-center">
-        <UserRound className="h-12 w-12 text-muted-foreground/40" />
+        <UserRound className="h-12 w-12 text-muted-foreground/40"/>
         <p className="text-muted-foreground">등록된 프로필이 없습니다.</p>
         <Button asChild className="mt-2">
-          <a href="/profile/new">프로필 만들기</a>
+          <Link href="/profile/new">프로필 만들기</Link>
         </Button>
       </div>
     )
@@ -95,7 +96,8 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     <div className="space-y-6">
       <div>
         <h2 className="mb-3 text-lg font-semibold">
-          프로필 선택 {!isSolo && <span className="text-sm font-normal text-muted-foreground">({selectedProfileIds.length}/{MAX_DUO_PROFILES})</span>}
+          프로필 선택 {!isSolo && <span
+            className="text-sm font-normal text-muted-foreground">({selectedProfileIds.length}/{MAX_DUO_PROFILES})</span>}
         </h2>
         <div className="space-y-2">
           {profiles.map((profile) => {
@@ -119,7 +121,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
                 <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                   selected ? 'bg-white/20' : 'bg-white/10'
                 }`}>
-                  <UserRound className="h-5 w-5 text-muted-foreground" />
+                  <UserRound className="h-5 w-5 text-muted-foreground"/>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{profile.name || '이름 없음'}</p>
@@ -138,13 +140,22 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
         </div>
       </div>
 
-      <Button
-        className="w-full"
-        disabled={!canAnalyze || loading}
-        onClick={handleAnalyze}
-      >
-        {loading ? '분석 중...' : '분석하기'}
-      </Button>
+      <div className="space-y-3">
+        <Button variant="outline" className="w-full border-0" asChild>
+          <Link href="/profile/new">
+            <UserRoundPlus className="h-4 w-4"/>
+            프로필 등록
+          </Link>
+        </Button>
+
+        <Button
+          className="w-full"
+          disabled={!canAnalyze || loading}
+          onClick={handleAnalyze}
+        >
+          {loading ? '분석 중...' : '분석하기'}
+        </Button>
+      </div>
 
       {error && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
