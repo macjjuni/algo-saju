@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -43,7 +44,8 @@ export default function Header({ isAuthenticated }: HeaderProps) {
       className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${isHidden ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="container mx-auto flex h-14 items-center px-4">
-        <Link href="/" className="text-lg font-bold">
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold">
+          <Image src="/images/logo.webp" alt="로고" width={28} height={28} />
           {process.env.NEXT_PUBLIC_APP_NAME}
         </Link>
 
