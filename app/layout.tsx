@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import GoogleAnalytics from "@/components/analytics/google-analytics";
 import "./globals.css";
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "algo-saju";
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "알고사주";
 const siteUrl = "https://www.algo-saju.com";
 const description =
   "태어난 순간의 사주를 AI 알고리즘으로 분석합니다. 연애운, 재물운, 건강운 등 다양한 운세를 무료로 확인하세요.";
