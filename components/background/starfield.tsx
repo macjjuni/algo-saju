@@ -46,7 +46,7 @@ export default function Starfield() {
     let animationId: number;
     let stars: Star[] = [];
     let comets: Comet[] = [];
-    let lastCometTime = 0;
+    let nextCometTime = Math.random() * 6000 + 4000;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -122,9 +122,9 @@ export default function Starfield() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // 혜성 스폰: 4~10초 간격
-      if (time - lastCometTime > Math.random() * 6000 + 4000) {
+      if (time > nextCometTime) {
         spawnComet();
-        lastCometTime = time;
+        nextCometTime = time + Math.random() * 6000 + 4000;
       }
       drawComets();
 

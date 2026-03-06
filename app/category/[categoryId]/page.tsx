@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import { auth } from '@/lib/auth'
 import { getTemplates } from '@/api/fortune'
 import GlassPanel from '@/components/ui/glass-panel'
 import TemplateGrid from '@/components/feature/fortune/template-grid'
@@ -13,12 +12,11 @@ interface Props {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const session = await auth()
   const { categoryId } = await params
 
   let templates
   try {
-    templates = await getTemplates(session!.backendToken!, categoryId)
+    templates = await getTemplates(categoryId)
   } catch {
     notFound()
   }

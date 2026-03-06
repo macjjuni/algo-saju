@@ -1,4 +1,4 @@
-// region [Privates]
+
 const cleanRawText = (text: string): string => {
   return text
     .split("\n")
@@ -39,9 +39,7 @@ const compressNatalRaw = (text: string): string => {
     .replace(/orb\s+/g, "@")
     .replace(/\s{2,}/g, " ");
 };
-// endregion
 
-// region [Transactions]
 export const getCompressedFortuneText = (saju: string, ziwei: string, natal: string): string => {
   const sajuPart = compressSajuRaw(saju);
   const ziweiPart = compressZiweiRaw(ziwei);
@@ -53,4 +51,4 @@ export const getCompressedFortuneText = (saju: string, ziwei: string, natal: str
     natalPart ? `[NATAL]\n${natalPart}` : "",
   ].filter(Boolean).join("\n\n");
 };
-// endregion
+

@@ -1,3 +1,4 @@
+import type { Gender } from "@orrery/core";
 import { apiClient, authHeaders } from "@/lib/api-client";
 
 export interface Profile {
@@ -9,7 +10,7 @@ export interface Profile {
   day: number;
   hour: number;
   minute: number;
-  gender: "M" | "F";
+  gender: Gender;
   unknownTime: boolean;
   latitude: number;
   longitude: number;
@@ -25,7 +26,7 @@ export interface CreateProfileRequest {
   day: number;
   hour: number;
   minute: number;
-  gender: "M" | "F";
+  gender: Gender;
   unknownTime: boolean;
   latitude: number;
   longitude: number;

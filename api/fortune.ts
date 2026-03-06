@@ -37,12 +37,10 @@ export async function requestFortune(token: string, body: FortuneRequest): Promi
 
 const FOUR_HOURS = 4 * 60 * 60;
 
-export async function getTemplates(token: string, c: string): Promise<PromptTemplate[]> {
+export async function getTemplates(c: string): Promise<PromptTemplate[]> {
   const cached = unstable_cache(
     async () => {
-      const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`, {
-        headers: authHeaders(token),
-      });
+      const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`);
       return res.templates;
     },
     ["fortune-templates", c],
@@ -51,12 +49,10 @@ export async function getTemplates(token: string, c: string): Promise<PromptTemp
   return cached();
 }
 
-export async function getCategories(token: string): Promise<Category[]> {
+export async function getCategories(): Promise<Category[]> {
   const cached = unstable_cache(
     async () => {
-      const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories", {
-        headers: authHeaders(token),
-      });
+      const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories");
       return res.categories;
     },
     ["fortune-categories"],

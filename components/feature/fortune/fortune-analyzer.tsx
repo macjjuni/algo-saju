@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { throttle } from 'lodash-es'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import { Button } from '@/components/ui/button'
 import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/actions'
+import { formatBirth } from '@/lib/format'
 import useFortuneStore from '@/store/useFortuneStore'
 
 interface FortuneAnalyzerProps {
@@ -17,12 +17,6 @@ interface FortuneAnalyzerProps {
 }
 
 const MAX_DUO_PROFILES = 2
-
-function formatBirth(p: Profile) {
-  const date = `${p.year}.${String(p.month).padStart(2, '0')}.${String(p.day).padStart(2, '0')}`
-  if (p.unknownTime) return `${date} (시간 미상)`
-  return `${date} ${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`
-}
 
 export default function FortuneAnalyzer({ profiles, templateId, isSolo }: FortuneAnalyzerProps) {
   // region [Hooks]
@@ -48,6 +42,9 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     : selectedProfileIds.length === MAX_DUO_PROFILES
   // endregion
 
+  const lastAnalyzeTime = useRef(0)
+  // endregion
+
   // region [Events]
   const handleSelectSolo = (id: string) => {
     setSelectedProfileId(id)
@@ -66,8 +63,11 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     else handleSelectDuo(id)
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleAnalyze = useCallback(throttle(async () => {
+  const handleAnalyze = useCallback(async () => {
+    const now = Date.now()
+    if (now - lastAnalyzeTime.current < 3000) return
+    lastAnalyzeTime.current = now
+
     const ids = isSolo ? (selectedProfileId ? [selectedProfileId] : []) : selectedProfileIds
     if (ids.length === 0) return
 
@@ -83,7 +83,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
       setResult(res.result)
       router.push('/fortune/result')
     }
-  }, 3000, { trailing: false }), [isSolo, selectedProfileId, selectedProfileIds, templateId])
+  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router])
   // endregion
 
   if (profiles.length === 0) {

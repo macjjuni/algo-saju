@@ -1,34 +1,24 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { UserRound, Pencil } from 'lucide-react'
 import { auth } from '@/lib/auth'
 import { getProfiles } from '@/api/profile'
 import { Button } from '@/components/ui/button'
 import ProfileDeleteButton from '@/components/feature/profile/profile-delete-button'
+import { formatBirth } from '@/lib/format'
+import { MAX_PROFILES } from '@/lib/constants'
 import ProfileAddButton from '@/components/feature/profile/profile-add-button'
 import GlassPanel from '@/components/ui/glass-panel'
-
-const MAX_PROFILES = 10
 
 export const metadata = {
   title: '프로필 관리',
 }
 
-function formatBirth(p: {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  unknownTime: boolean
-}) {
-  const date = `${p.year}.${String(p.month).padStart(2, '0')}.${String(p.day).padStart(2, '0')}`
-  if (p.unknownTime) return `${date} (시간 미상)`
-  return `${date} ${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`
-}
-
 export default async function ProfileListPage() {
   const session = await auth()
-  const profiles = await getProfiles(session!.backendToken!)
+  if (!session?.backendToken) redirect('/login')
+
+  const profiles = await getProfiles(session.backendToken)
 
   return (
     <GlassPanel>
