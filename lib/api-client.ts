@@ -28,7 +28,8 @@ export async function apiClient<T>(
     throw error;
   }
 
-  return res.json();
+  const text = await res.text();
+  return text ? JSON.parse(text) : undefined;
 }
 
 export function authHeaders(token: string) {

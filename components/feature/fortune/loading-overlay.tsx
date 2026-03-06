@@ -14,7 +14,7 @@ export default function FortuneLoadingOverlay() {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm">
       <Lottie animationData={aiAnimation} loop className="h-40 w-40" />
-      <p className="mt-2 text-lg font-medium text-white">분석 중...</p>
+      <p className="mt-2 text-lg font-medium text-white">AI 분석 중...</p>
     </div>
   )
 }
