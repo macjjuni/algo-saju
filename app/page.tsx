@@ -50,7 +50,7 @@ export default async function Home() {
       </div>
 
       {/* Features */}
-      <section id="features" className="w-full max-w-4xl py-20">
+      <section id="features" className="w-full max-w-4xl py-20 max-lg:pb-10">
         <h2 className="text-center text-2xl font-bold mb-12">왜 <u>&#34;{process.env.NEXT_PUBLIC_APP_NAME}&#34;</u> 인가</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">

@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { apiClient, authHeaders } from "@/lib/api-client";
 
 export interface FortuneRequest {
@@ -34,16 +35,32 @@ export async function requestFortune(token: string, body: FortuneRequest): Promi
   });
 }
 
+const FOUR_HOURS = 4 * 60 * 60;
+
 export async function getTemplates(token: string, c: string): Promise<PromptTemplate[]> {
-  const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`, {
-    headers: authHeaders(token),
-  });
-  return res.templates;
+  const cached = unstable_cache(
+    async () => {
+      const res = await apiClient<{ templates: PromptTemplate[] }>(`/api/v1/fortune/templates?c=${c}`, {
+        headers: authHeaders(token),
+      });
+      return res.templates;
+    },
+    ["fortune-templates", c],
+    { revalidate: FOUR_HOURS },
+  );
+  return cached();
 }
 
 export async function getCategories(token: string): Promise<Category[]> {
-  const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories", {
-    headers: authHeaders(token),
-  });
-  return res.categories;
+  const cached = unstable_cache(
+    async () => {
+      const res = await apiClient<{ categories: Category[] }>("/api/v1/fortune/categories", {
+        headers: authHeaders(token),
+      });
+      return res.categories;
+    },
+    ["fortune-categories"],
+    { revalidate: FOUR_HOURS },
+  );
+  return cached();
 }
