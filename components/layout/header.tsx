@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,6 +26,12 @@ export default function Header({ isAuthenticated }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   useOutsideClick(headerRef, () => setMobileMenuOpen(false), mobileMenuOpen);
+  // endregion
+
+  // region [Life Cycles]
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
   // endregion
 
   // region [Events]
