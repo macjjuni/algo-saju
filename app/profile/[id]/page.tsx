@@ -17,7 +17,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ id
   return (
     <ProfileFormPage
       title="프로필 수정"
-      defaultValues={profile}
+      defaultValues={{ ...profile, privacyConsent: true }}
       profileId={id}
       submitLabel="수정하기"
     />

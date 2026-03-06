@@ -3,7 +3,7 @@ import { apiClient, authHeaders } from "@/lib/api-client";
 export interface Profile {
   id: string;
   userId: string;
-  name?: string;
+  name: string;
   year: number;
   month: number;
   day: number;
@@ -19,7 +19,7 @@ export interface Profile {
 }
 
 export interface CreateProfileRequest {
-  name?: string;
+  name: string;
   year: number;
   month: number;
   day: number;

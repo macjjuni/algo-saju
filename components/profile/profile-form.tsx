@@ -16,7 +16,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CityPicker from "./city-picker";
 import { CreateProfileRequest } from '@/api/profile'
 
@@ -44,6 +43,7 @@ const DEFAULT_VALUES: BirthFormValues = {
   latitude: 37.5665,
   longitude: 126.978,
   cityName: "서울",
+  privacyConsent: false as unknown as true,
 };
 // endregion
 
@@ -51,9 +51,10 @@ interface ProfileFormProps {
   defaultValues?: Partial<BirthFormValues>;
   onSubmit: (data: CreateProfileRequest) => Promise<void>;
   submitLabel?: string;
+  hidePrivacyConsent?: boolean;
 }
 
-export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "저장하기" }: ProfileFormProps) {
+export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "저장하기", hidePrivacyConsent }: ProfileFormProps) {
   // region [Hooks]
   const [isPending, startTransition] = useTransition();
 
@@ -102,164 +103,151 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
 
   function onFormSubmit(data: BirthFormValues) {
     startTransition(async () => {
-      await onSubmit(data);
+      const { privacyConsent: _privacyConsent, ...payload } = data;
+      await onSubmit(payload);
     });
   }
   // endregion
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-      {/* 이름 (선택) */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">이름 (선택)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Input
-            placeholder="예: 본인, 배우자, 자녀 등"
-            maxLength={16}
-            {...form.register("name")}
-          />
-        </CardContent>
-      </Card>
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+      {/* 이름 */}
+      <section className="space-y-4">
+        <Label className="text-sm font-medium">이름</Label>
+        <Input
+          placeholder="예: 본인, 배우자, 친구 등"
+          maxLength={16}
+          {...form.register("name")}
+        />
+        {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+      </section>
 
       {/* 생년월일 */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">생년월일 (양력)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-3 gap-2">
-            <div>
-              <Label className="text-xs text-muted-foreground">년도</Label>
-              <Select value={String(year)} onValueChange={onChangeYear}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {yearOptions.map((y) => (
-                    <SelectItem key={y} value={String(y)}>{y}년</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-xs text-muted-foreground">월</Label>
-              <Select value={String(month)} onValueChange={onChangeMonth}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {monthOptions.map((m) => (
-                    <SelectItem key={m} value={String(m)}>{m}월</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-xs text-muted-foreground">일</Label>
-              <Select value={String(watch("day"))} onValueChange={(v) => setValue("day", Number(v))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {dayOptions.map((d) => (
-                    <SelectItem key={d} value={String(d)}>{d}일</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          {errors.day && <p className="mt-1 text-xs text-destructive">{errors.day.message}</p>}
-        </CardContent>
-      </Card>
+      <section className="space-y-4">
+        <Label className="text-sm font-medium">생년월일 (양력)</Label>
+        <div className="grid grid-cols-3 gap-3">
+          <Select value={String(year)} onValueChange={onChangeYear}>
+            <SelectTrigger><SelectValue placeholder="년도" /></SelectTrigger>
+            <SelectContent className="max-h-60">
+              {yearOptions.map((y) => (
+                <SelectItem key={y} value={String(y)}>{y}년</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={String(month)} onValueChange={onChangeMonth}>
+            <SelectTrigger><SelectValue placeholder="월" /></SelectTrigger>
+            <SelectContent>
+              {monthOptions.map((m) => (
+                <SelectItem key={m} value={String(m)}>{m}월</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={String(watch("day"))} onValueChange={(v) => setValue("day", Number(v))}>
+            <SelectTrigger><SelectValue placeholder="일" /></SelectTrigger>
+            <SelectContent>
+              {dayOptions.map((d) => (
+                <SelectItem key={d} value={String(d)}>{d}일</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        {errors.day && <p className="text-xs text-destructive">{errors.day.message}</p>}
+      </section>
 
       {/* 태어난 시간 */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base">태어난 시간</CardTitle>
-            <div className="flex items-center gap-2">
-              <Label htmlFor="unknown-time" className="text-sm text-muted-foreground">모름</Label>
-              <Switch
-                id="unknown-time"
-                checked={unknownTime}
-                onCheckedChange={(v) => setValue("unknownTime", v)}
-              />
-            </div>
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Label className="text-sm font-medium">태어난 시간</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="unknown-time" className="text-sm text-muted-foreground">모름</Label>
+            <Switch
+              id="unknown-time"
+              checked={unknownTime}
+              onCheckedChange={(v) => setValue("unknownTime", v)}
+            />
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label className="text-xs text-muted-foreground">시</Label>
-              <Select
-                value={String(watch("hour"))}
-                onValueChange={(v) => setValue("hour", Number(v))}
-                disabled={unknownTime}
-              >
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {hourOptions.map((h) => (
-                    <SelectItem key={h} value={String(h)}>
-                      {String(h).padStart(2, "0")}시
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-xs text-muted-foreground">분</Label>
-              <Select
-                value={String(watch("minute"))}
-                onValueChange={(v) => setValue("minute", Number(v))}
-                disabled={unknownTime}
-              >
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {minuteOptions.map((m) => (
-                    <SelectItem key={m} value={String(m)}>
-                      {String(m).padStart(2, "0")}분
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Select
+            value={String(watch("hour"))}
+            onValueChange={(v) => setValue("hour", Number(v))}
+            disabled={unknownTime}
+          >
+            <SelectTrigger><SelectValue placeholder="시" /></SelectTrigger>
+            <SelectContent className="max-h-60">
+              {hourOptions.map((h) => (
+                <SelectItem key={h} value={String(h)}>
+                  {String(h).padStart(2, "0")}시
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
+            value={String(watch("minute"))}
+            onValueChange={(v) => setValue("minute", Number(v))}
+            disabled={unknownTime}
+          >
+            <SelectTrigger><SelectValue placeholder="분" /></SelectTrigger>
+            <SelectContent className="max-h-60">
+              {minuteOptions.map((m) => (
+                <SelectItem key={m} value={String(m)}>
+                  {String(m).padStart(2, "0")}분
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </section>
 
       {/* 성별 */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">성별</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-3">
-            {([["M", "남성"], ["F", "여성"]] as const).map(([val, label]) => (
-              <Button
-                key={val}
-                type="button"
-                variant={gender === val ? "default" : "outline"}
-                className="w-full"
-                onClick={() => setValue("gender", val)}
-              >
-                {label}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <section className="space-y-4">
+        <Label className="text-sm font-medium">성별</Label>
+        <div className="grid grid-cols-2 gap-3">
+          {([["M", "남성"], ["F", "여성"]] as const).map(([val, label]) => (
+            <Button
+              key={val}
+              type="button"
+              variant={gender === val ? "default" : "outline"}
+              className="w-full"
+              onClick={() => setValue("gender", val)}
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
+      </section>
 
       {/* 출생 위치 */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">출생 위치</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CityPicker
-            value={{ name: cityName, lat: latitude, lon: longitude }}
-            onChange={onSelectCity}
-          />
-          {errors.cityName && (
-            <p className="mt-1 text-xs text-destructive">{errors.cityName.message}</p>
+      <section className="space-y-4">
+        <Label className="text-sm font-medium">출생 위치</Label>
+        <CityPicker
+          value={{ name: cityName, lat: latitude, lon: longitude }}
+          onChange={onSelectCity}
+        />
+        {errors.cityName && (
+          <p className="text-xs text-destructive">{errors.cityName.message}</p>
+        )}
+      </section>
+
+      {/* 개인정보 수집·이용 동의 */}
+      {!hidePrivacyConsent && (
+        <section className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-4">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            입력된 개인정보(이름, 생년월일, 성별, 출생 위치)는 운세 분석 목적으로만 사용되며, 분석 외 다른 용도로 활용되지 않습니다. 프로필은 언제든지 삭제할 수 있으며, 삭제 시 관련 정보가 모두 제거됩니다.
+          </p>
+          <label className="flex items-start gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border border-white/20 accent-primary"
+              {...form.register("privacyConsent")}
+            />
+            <span className="text-sm">개인정보 수집·이용에 동의합니다.</span>
+          </label>
+          {errors.privacyConsent && (
+            <p className="text-xs text-destructive">{errors.privacyConsent.message}</p>
           )}
-        </CardContent>
-      </Card>
+        </section>
+      )}
 
       {/* 제출 버튼 */}
       <Button type="submit" className="w-full" size="lg" disabled={isPending}>

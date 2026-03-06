@@ -35,7 +35,7 @@ export default function ProfileFormPage({ title, defaultValues, profileId, submi
     <GlassPanel>
       <div className="max-w-lg mx-auto">
         <h1 className="mb-6 text-center text-2xl font-bold">{title}</h1>
-        <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel}/>
+        <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel} hidePrivacyConsent={!!profileId}/>
       </div>
     </GlassPanel>
   )
