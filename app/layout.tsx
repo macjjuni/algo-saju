@@ -4,11 +4,14 @@ import QueryProvider from "@/providers/query-provider";
 import SessionProvider from "@/providers/session-provider";
 import { Header, Content, Footer } from "@/components/layout";
 import Starfield from "@/components/background/starfield";
+import FortuneLoadingOverlay from "@/components/fortune/loading-overlay";
 import "./globals.css";
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "algo-saju";
+
 export const metadata: Metadata = {
-  title: "algo-saju",
-  description: "algo-saju community",
+  title: { default: appName, template: `%s - ${appName}` },
+  description: `${appName} community`,
 };
 
 export default async function RootLayout({
@@ -29,6 +32,7 @@ export default async function RootLayout({
               <Content>{children}</Content>
               <Footer />
             </div>
+            <FortuneLoadingOverlay />
           </QueryProvider>
         </SessionProvider>
       </body>

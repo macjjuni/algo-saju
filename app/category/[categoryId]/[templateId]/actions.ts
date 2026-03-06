@@ -37,7 +37,15 @@ export async function analyzeFortuneAction(
   )
 
   const chartData = chartDataParts.join('\n\n')
-  const response = await requestFortune(session.backendToken, { chartData, promptTemplateId: templateId })
 
-  return { result: response.result }
+  try {
+    const response = await requestFortune(session.backendToken, { chartData, promptTemplateId: templateId })
+    return { result: response.result }
+  } catch (err) {
+    const status = (err as Error & { status?: number }).status
+    if (status === 429) {
+      return { error: '오늘의 분석 횟수를 모두 사용했습니다. 자정에 초기화됩니다.' }
+    }
+    return { error: '분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' }
+  }
 }

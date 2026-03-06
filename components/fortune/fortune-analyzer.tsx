@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { throttle } from 'lodash-es'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import { Button } from '@/components/ui/button'
 import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/actions'
+import useFortuneStore from '@/store/useFortuneStore'
 
 interface FortuneAnalyzerProps {
   profiles: Profile[]
@@ -27,9 +30,11 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     isSolo && profiles.length === 1 ? profiles[0].id : null
   )
   const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const setLoading = useFortuneStore((s) => s.setLoading)
+  const setResult = useFortuneStore((s) => s.setResult)
+  const loading = useFortuneStore((s) => s.loading)
+  const router = useRouter()
   // endregion
 
   // region [Privates]
@@ -61,23 +66,24 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     else handleSelectDuo(id)
   }
 
-  const handleAnalyze = async () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleAnalyze = useCallback(throttle(async () => {
     const ids = isSolo ? (selectedProfileId ? [selectedProfileId] : []) : selectedProfileIds
     if (ids.length === 0) return
 
     setLoading(true)
     setError(null)
-    setResult(null)
 
     const res = await analyzeFortuneAction(ids, templateId)
-    setLoading(false)
 
     if ('error' in res) {
+      setLoading(false)
       setError(res.error)
     } else {
       setResult(res.result)
+      router.push('/fortune/result')
     }
-  }
+  }, 3000, { trailing: false }), [isSolo, selectedProfileId, selectedProfileIds, templateId])
   // endregion
 
   if (profiles.length === 0) {
@@ -110,7 +116,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
                 type="button"
                 onClick={() => handleSelect(profile.id)}
                 disabled={disabledDuo}
-                className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition-colors ${
+                className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 cursor-pointer text-left transition-colors ${
                   selected
                     ? 'border-white/40 bg-white/15'
                     : disabledDuo
@@ -160,13 +166,6 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
       {error && (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
-        </div>
-      )}
-
-      {result && (
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-5">
-          <h2 className="mb-3 text-lg font-semibold">분석 결과</h2>
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{result}</p>
         </div>
       )}
     </div>
