@@ -10,7 +10,7 @@ import GoogleAnalytics from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "알고사주";
-const siteUrl = "https://www.algosaju.com";
+const siteUrl = "https://www.algosaju.app";
 const description =
   "AI 알고리즘으로 운세를 분석합니다. 연애운, 재물운, 건강운 등 다양한 운세를 하루 3회 무료로 확인하세요.";
 

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/account/", "/profile/", "/category/"],
     },
-    sitemap: "https://www.algo-saju.com/sitemap.xml",
+    sitemap: "https://www.algosaju.app/sitemap.xml",
   };
 }

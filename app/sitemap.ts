@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://www.algo-saju.com";
+const siteUrl = "https://www.algosaju.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
