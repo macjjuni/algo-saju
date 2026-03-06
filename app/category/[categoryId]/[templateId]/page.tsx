@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth'
 import { getTemplates } from '@/api/fortune'
 import { getProfiles } from '@/api/profile'
 import GlassPanel from '@/components/ui/glass-panel'
-import FortuneAnalyzer from '@/components/fortune/fortune-analyzer'
+import FortuneAnalyzer from '@/components/feature/fortune/fortune-analyzer'
 
 export const metadata = {
   title: '운세 분석',

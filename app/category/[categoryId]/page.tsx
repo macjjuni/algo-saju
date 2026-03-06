@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { getTemplates } from '@/api/fortune'
 import GlassPanel from '@/components/ui/glass-panel'
-import TemplateGrid from '@/components/fortune/template-grid'
+import TemplateGrid from '@/components/feature/fortune/template-grid'
 
 export const metadata = {
   title: '운세 선택',

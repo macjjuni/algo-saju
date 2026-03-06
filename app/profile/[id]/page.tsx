@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getProfile } from "@/api/profile";
-import ProfileFormPage from "@/components/profile/profile-form-page";
+import ProfileFormPage from "@/components/feature/profile/profile-form-page";
 
 export const metadata = {
   title: "프로필 수정",

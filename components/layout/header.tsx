@@ -3,11 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useScrollDirection from "@/hooks/use-scroll-direction";
-import AuthButton from "./auth-button";
+import AuthButton from "@/components/common/auth-button";
 
 interface HeaderProps {
   isAuthenticated: boolean;
 }
+
+const menuItems = [
+  { href: '/category', label: '운세 카테고리' },
+  { href: '/profile', label: '프로필 관리' },
+  { href: '/account', label: '내 정보' },
+];
 
 export default function Header({ isAuthenticated }: HeaderProps) {
   // region [Hooks]
@@ -24,16 +30,11 @@ export default function Header({ isAuthenticated }: HeaderProps) {
           {process.env.NEXT_PUBLIC_APP_NAME}
         </Link>
         <nav className="ml-auto flex items-center gap-4">
-          {isAuthenticated && (
-            <>
-              <Link href="/category" className={`text-sm transition-colors ${pathname.startsWith('/category') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
-                운세 보기
-              </Link>
-              <Link href="/profile" className={`text-sm transition-colors ${pathname.startsWith('/profile') ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
-                프로필 관리
-              </Link>
-            </>
-          )}
+          {isAuthenticated && menuItems.map((item) => (
+            <Link key={item.href} href={item.href} className={`text-sm transition-colors ${pathname.startsWith(item.href) ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
+              {item.label}
+            </Link>
+          ))}
           <AuthButton />
         </nav>
       </div>

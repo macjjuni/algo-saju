@@ -1,4 +1,4 @@
-import ProfileFormPage from "@/components/profile/profile-form-page";
+import ProfileFormPage from "@/components/feature/profile/profile-form-page";
 
 export const metadata = {
   title: "프로필 작성",

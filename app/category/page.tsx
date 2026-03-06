@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth'
 import { getCategories } from '@/api/fortune'
 import GlassPanel from '@/components/ui/glass-panel'
-import CategoryGrid from '@/components/fortune/category-grid'
+import CategoryGrid from '@/components/feature/fortune/category-grid'
 
 export const metadata = {
   title: '운세 보기',

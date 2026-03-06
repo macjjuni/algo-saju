@@ -3,7 +3,7 @@ import { UserRound, Pencil } from 'lucide-react'
 import { auth } from '@/lib/auth'
 import { getProfiles } from '@/api/profile'
 import { Button } from '@/components/ui/button'
-import ProfileDeleteButton from '@/components/profile/profile-delete-button'
+import ProfileDeleteButton from '@/components/feature/profile/profile-delete-button'
 import GlassPanel from '@/components/ui/glass-panel'
 
 export const metadata = {
