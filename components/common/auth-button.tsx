@@ -4,12 +4,38 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
-export default function AuthButton() {
+interface AuthButtonProps {
+  variant?: "default" | "mobile";
+}
+
+export default function AuthButton({ variant = "default" }: AuthButtonProps) {
   // region [Hooks]
   const { status } = useSession();
   // endregion
 
   if (status === "loading") return null;
+
+  if (variant === "mobile") {
+    if (status === "authenticated") {
+      return (
+        <button
+          type="button"
+          onClick={() => signOut()}
+          className="w-full rounded-md px-3 py-2 text-left text-sm text-foreground/70 hover:bg-accent hover:text-foreground transition-colors"
+        >
+          로그아웃
+        </button>
+      );
+    }
+    return (
+      <Link
+        href="/login"
+        className="block rounded-md px-3 py-2 text-sm text-foreground/70 hover:bg-accent hover:text-foreground transition-colors"
+      >
+        로그인
+      </Link>
+    );
+  }
 
   if (status === "authenticated") {
     return (

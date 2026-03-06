@@ -1,8 +1,11 @@
 "use client";
 
+import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import useScrollDirection from "@/hooks/use-scroll-direction";
+import useOutsideClick from "@/hooks/use-outside-click";
 import AuthButton from "@/components/common/auth-button";
 
 interface HeaderProps {
@@ -19,17 +22,33 @@ export default function Header({ isAuthenticated }: HeaderProps) {
   // region [Hooks]
   const isHidden = useScrollDirection();
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  useOutsideClick(headerRef, () => setMobileMenuOpen(false), mobileMenuOpen);
+  // endregion
+
+  // region [Events]
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen((prev) => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
   // endregion
 
   return (
     <header
+      ref={headerRef}
       className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${isHidden ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div className="container mx-auto flex h-14 items-center px-4">
         <Link href="/" className="text-lg font-bold">
           {process.env.NEXT_PUBLIC_APP_NAME}
         </Link>
-        <nav className="ml-auto flex items-center gap-4">
+
+        {/* Desktop Navigation */}
+        <nav className="ml-auto hidden md:flex items-center gap-4">
           {isAuthenticated && menuItems.map((item) => (
             <Link key={item.href} href={item.href} className={`text-sm transition-colors ${pathname.startsWith(item.href) ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
               {item.label}
@@ -37,7 +56,36 @@ export default function Header({ isAuthenticated }: HeaderProps) {
           ))}
           <AuthButton />
         </nav>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          type="button"
+          className="ml-auto md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
+          onClick={toggleMobileMenu}
+          aria-label={mobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+          <nav className="md:hidden border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
+              {isAuthenticated && menuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMobileMenu}
+                  className={`rounded-md px-3 py-2 text-sm transition-colors ${pathname.startsWith(item.href) ? 'bg-accent text-foreground font-medium' : 'text-foreground/70 hover:bg-accent hover:text-foreground'}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <AuthButton variant="mobile" />
+            </div>
+          </nav>
+      )}
     </header>
   );
 }
