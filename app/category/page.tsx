@@ -4,7 +4,7 @@ import GlassPanel from '@/components/ui/glass-panel'
 import CategoryGrid from '@/components/fortune/category-grid'
 
 export const metadata = {
-  title: '운세 보기 - algo-saju',
+  title: '운세 보기',
 }
 
 export default async function FortunePage() {

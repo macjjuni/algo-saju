@@ -1,7 +1,7 @@
 import ProfileFormPage from "@/components/profile/profile-form-page";
 
 export const metadata = {
-  title: "프로필 작성 - algo-saju",
+  title: "프로필 작성",
 };
 
 export default function NewProfilePage() {

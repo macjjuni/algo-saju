@@ -4,7 +4,7 @@ import { getProfile } from "@/api/profile";
 import ProfileFormPage from "@/components/profile/profile-form-page";
 
 export const metadata = {
-  title: "프로필 수정 - algo-saju",
+  title: "프로필 수정",
 };
 
 export default async function EditProfilePage({ params }: { params: Promise<{ id: string }> }) {

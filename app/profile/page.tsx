@@ -7,7 +7,7 @@ import ProfileDeleteButton from '@/components/profile/profile-delete-button'
 import GlassPanel from '@/components/ui/glass-panel'
 
 export const metadata = {
-  title: '프로필 관리 - algo-saju',
+  title: '프로필 관리',
 }
 
 function formatBirth(p: {

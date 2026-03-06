@@ -5,7 +5,7 @@ import GlassPanel from '@/components/ui/glass-panel'
 import TemplateGrid from '@/components/fortune/template-grid'
 
 export const metadata = {
-  title: '운세 선택 - algo-saju',
+  title: '운세 선택',
 }
 
 interface Props {
