@@ -29,7 +29,7 @@ export async function apiClient<T>(
   }
 
   const text = await res.text();
-  return text ? JSON.parse(text) : undefined;
+  return (text ? JSON.parse(text) : undefined) as T;
 }
 
 export function authHeaders(token: string) {
