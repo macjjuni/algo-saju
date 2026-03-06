@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { withdrawAction, signOutAction } from "@/app/account/withdraw/actions";
+import { withdrawAction } from "@/app/account/withdraw/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,12 +24,11 @@ export default function WithdrawButton() {
     setPending(true);
     try {
       await withdrawAction();
+      window.location.href = "/";
     } catch {
       alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
       setPending(false);
-      return;
     }
-    await signOutAction();
   }
   // endregion
 
