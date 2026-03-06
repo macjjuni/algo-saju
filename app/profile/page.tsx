@@ -4,7 +4,10 @@ import { auth } from '@/lib/auth'
 import { getProfiles } from '@/api/profile'
 import { Button } from '@/components/ui/button'
 import ProfileDeleteButton from '@/components/feature/profile/profile-delete-button'
+import ProfileAddButton from '@/components/feature/profile/profile-add-button'
 import GlassPanel from '@/components/ui/glass-panel'
+
+const MAX_PROFILES = 10
 
 export const metadata = {
   title: '프로필 관리',
@@ -31,10 +34,11 @@ export default async function ProfileListPage() {
     <GlassPanel>
       <div className="max-w-xl mx-auto">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">프로필 관리</h1>
-        <Button asChild>
-          <Link href="/profile/new">프로필 추가</Link>
-        </Button>
+        <div>
+          <h1 className="text-2xl font-bold">프로필 관리</h1>
+          <p className="text-sm text-muted-foreground mt-1">{profiles.length} / {MAX_PROFILES}명</p>
+        </div>
+        <ProfileAddButton count={profiles.length} />
       </div>
 
       {profiles.length === 0 ? (
