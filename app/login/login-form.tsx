@@ -9,6 +9,22 @@ export default function LoginForm() {
   const searchParams = useSearchParams()
   // endregion
 
+  // region [Privates]
+  const withdrawnError = searchParams.get('error') === 'withdrawn'
+  const errorMessage = searchParams.get('message')
+  const retryAfter = searchParams.get('retryAfter')
+
+  function formatRetryAfter(isoString: string): string {
+    const date = new Date(isoString)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`
+  }
+  // endregion
+
   // region [Events]
   function onClickGoogleLogin() {
     const callbackUrl = searchParams.get('callbackUrl') ?? '/'
@@ -26,9 +42,20 @@ export default function LoginForm() {
               소셜 계정으로 간편하게 로그인하세요
             </p>
           </div>
+          {withdrawnError && (
+            <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
+              <p>{errorMessage}</p>
+              {retryAfter && (
+                <p className="mt-1 font-medium">
+                  재가입 가능 시간: {formatRetryAfter(retryAfter)}
+                </p>
+              )}
+            </div>
+          )}
           <Button
             variant="outline"
             className="w-full h-10"
+            disabled={withdrawnError}
             onClick={onClickGoogleLogin}
           >
             <svg viewBox="0 0 24 24" className="mr-2 h-5 w-5" aria-hidden="true">

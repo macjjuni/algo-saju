@@ -5,6 +5,8 @@ export interface UserInfo {
   email: string;
   name: string;
   image: string;
+  provider: string;
+  usageCount: number;
 }
 
 export async function getMe(token: string): Promise<UserInfo> {
