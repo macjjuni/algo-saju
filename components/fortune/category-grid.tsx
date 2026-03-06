@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { icons } from 'lucide-react'
 import type { Category } from '@/api/fortune'
 
 interface CategoryGridProps {
@@ -11,7 +12,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
       {categories.map((category) => (
         <Link
           key={category.id}
-          href={`/fortune/${category.id}`}
+          href={`/category/${category.id}`}
           className="group relative flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-7 text-center font-medium transition-all duration-200 hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98]"
         >
           {/* Icon */}
@@ -19,7 +20,10 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
             className="flex items-center justify-center w-12 h-12 rounded-xl text-2xl shadow-lg"
             style={{ backgroundColor: category.color ? `${category.color}22` : 'rgba(255,255,255,0.08)', boxShadow: category.color ? `0 0 16px ${category.color}33` : undefined }}
           >
-            {category.icon || '✨'}
+            {(() => {
+              const LucideIcon = icons[category.icon as keyof typeof icons]
+              return LucideIcon ? <LucideIcon size={24} color={category.color || undefined} /> : '✨'
+            })()}
           </span>
 
           {/* Title */}
