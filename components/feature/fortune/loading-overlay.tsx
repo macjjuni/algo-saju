@@ -1,10 +1,11 @@
 "use client"
 
+import { memo } from 'react'
 import Lottie from 'lottie-react'
 import useFortuneStore from '@/store/useFortuneStore'
 import aiAnimation from '@/public/lotties/ai.json'
 
-export default function FortuneLoadingOverlay() {
+export default memo(function FortuneLoadingOverlay() {
   // region [Hooks]
   const loading = useFortuneStore((s) => s.loading)
   // endregion
@@ -27,4 +28,4 @@ export default function FortuneLoadingOverlay() {
       </div>
     </div>
   )
-}
+})

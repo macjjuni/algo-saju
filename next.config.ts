@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   experimental: {
     viewTransition: true,
+    optimizePackageImports: ["lucide-react", "radix-ui", "@tanstack/react-query"],
   },
   images: {
     remotePatterns: [

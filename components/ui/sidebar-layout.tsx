@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { icons } from 'lucide-react'
@@ -26,6 +26,13 @@ export default function SidebarLayout({ title, menuItems, children }: SidebarLay
   const activeRef = useRef<HTMLLIElement>(null)
   // endregion
 
+  // region [Privates]
+  const resolvedIcons = useMemo(
+    () => menuItems.map(({ icon }) => (typeof icon === 'string' ? icons[icon as keyof typeof icons] : icon)),
+    [menuItems],
+  )
+  // endregion
+
   // region [Events]
   const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (pathname === href) e.preventDefault()
@@ -44,9 +51,9 @@ export default function SidebarLayout({ title, menuItems, children }: SidebarLay
         <nav className="md:w-48 shrink-0">
           <h2 className="mb-6 text-lg font-semibold">{title}</h2>
           <ul className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none">
-            {menuItems.map(({ href, label, icon, color }) => {
+            {menuItems.map(({ href, label, color }, index) => {
               const isActive = pathname === href
-              const Icon = typeof icon === 'string' ? icons[icon as keyof typeof icons] : icon
+              const Icon = resolvedIcons[index]
               return (
                 <li key={href} ref={isActive ? activeRef : undefined}>
                   <Link
