@@ -15,7 +15,7 @@ export default function TermsPage() {
   return (
     <GlassPanel>
       <article
-        className="prose prose-invert max-w-none"
+        className="prose prose-invert prose-sm max-w-none prose-headings:mt-6 prose-headings:mb-2 prose-p:my-1.5 prose-li:my-0.5"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </GlassPanel>

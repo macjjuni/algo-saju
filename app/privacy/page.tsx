@@ -15,7 +15,7 @@ export default function PrivacyPage() {
   return (
     <GlassPanel>
       <article
-        className="prose prose-invert max-w-none"
+        className="prose prose-invert prose-sm max-w-none prose-headings:mt-6 prose-headings:mb-2 prose-p:my-1.5 prose-li:my-0.5 prose-table:my-2"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </GlassPanel>
