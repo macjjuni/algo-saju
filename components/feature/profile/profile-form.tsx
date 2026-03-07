@@ -110,7 +110,7 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
   // endregion
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8">
       {/* 이름 */}
       <section className="space-y-4">
         <Label className="text-sm font-medium">이름</Label>
@@ -208,7 +208,7 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
               key={val}
               type="button"
               variant={gender === val ? "default" : "outline"}
-              className="w-full"
+              className={`w-full ${gender === val ? "text-foreground bg-purple-600/70 hover:bg-purple-600/80" : ""}`}
               onClick={() => setValue("gender", val)}
             >
               {label}
