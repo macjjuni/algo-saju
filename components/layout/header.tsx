@@ -52,7 +52,7 @@ export default function Header({ isAuthenticated }: HeaderProps) {
       <div className="container mx-auto flex h-14 items-center px-4">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold">
           <Image src="/images/logo.webp" alt="로고" width={28} height={28} />
-          {process.env.NEXT_PUBLIC_APP_NAME}
+          알고사주
         </Link>
 
         {/* Desktop Navigation */}

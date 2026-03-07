@@ -14,7 +14,7 @@ export default function Footer() {
           </Link>
         </nav>
         <p className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME}
+          &copy; {new Date().getFullYear()}. 알고사주
         </p>
       </div>
     </footer>
