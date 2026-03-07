@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { deleteProfileAction } from "@/app/profile/actions";
 import { Button } from "@/components/ui/button";
@@ -25,12 +26,13 @@ export default function ProfileDeleteButton({ id }: { id: string }) {
   // region [Events]
   async function onConfirm() {
     setPending(true);
-    try {
-      await deleteProfileAction(id);
-      router.refresh();
-    } finally {
-      setPending(false);
+    const res = await deleteProfileAction(id);
+    setPending(false);
+    if (!res.success) {
+      toast.error(res.error);
+      return;
     }
+    router.refresh();
   }
   // endregion
 

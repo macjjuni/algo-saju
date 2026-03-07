@@ -1,4 +1,9 @@
 import type { Gender } from "@orrery/core";
+import type { ErrorCode } from "@/lib/api-client";
+
+export type ActionResult<T = void> =
+  | ({ success: true } & (T extends void ? object : { data: T }))
+  | { success: false; code: ErrorCode; error: string };
 
 export interface BirthForm {
   year: number;

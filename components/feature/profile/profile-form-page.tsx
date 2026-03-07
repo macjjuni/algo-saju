@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
 import type { CreateProfileRequest } from '@/api/profile'
 import type { BirthFormValues } from '@/lib/schema'
@@ -21,10 +22,13 @@ export default function ProfileFormPage({ title, defaultValues, profileId, submi
 
   // region [Events]
   async function onSubmit(data: CreateProfileRequest) {
-    if (profileId) {
-      await updateProfileAction(profileId, data)
-    } else {
-      await createProfileAction(data)
+    const res = profileId
+      ? await updateProfileAction(profileId, data)
+      : await createProfileAction(data)
+
+    if (!res.success) {
+      toast.error(res.error)
+      return
     }
     router.push('/profile')
   }

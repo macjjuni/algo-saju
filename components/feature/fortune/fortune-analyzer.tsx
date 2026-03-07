@@ -96,11 +96,11 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
 
     const res = await analyzeFortuneAction(birthForms, templateId)
 
-    if ('error' in res) {
+    if (!res.success) {
       setLoading(false)
       onError?.(res.error)
     } else {
-      setResult(res.result)
+      setResult(res.data)
       router.push('/fortune/result')
     }
   }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router, onAnalyzeStart, onError])

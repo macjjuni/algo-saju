@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { withdrawAction } from "@/app/account/withdraw/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,13 +23,13 @@ export default function WithdrawButton() {
   // region [Events]
   async function onConfirm() {
     setPending(true);
-    try {
-      await withdrawAction();
-      window.location.href = "/";
-    } catch {
-      alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+    const res = await withdrawAction();
+    if (!res.success) {
+      toast.error(res.error);
       setPending(false);
+      return;
     }
+    window.location.href = "/";
   }
   // endregion
 
