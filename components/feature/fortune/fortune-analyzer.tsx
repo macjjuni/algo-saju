@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
+import type { BirthForm } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { analyzeFortuneAction } from '@/app/category/[categoryId]/actions'
 import { formatBirth } from '@/lib/format'
@@ -15,17 +16,17 @@ interface FortuneAnalyzerProps {
   templateId: number
   isSolo: boolean
   onAnalyzeStart?: () => void
+  onError?: (message: string) => void
 }
 
 const MAX_DUO_PROFILES = 2
 
-export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyzeStart }: FortuneAnalyzerProps) {
+export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyzeStart, onError }: FortuneAnalyzerProps) {
   // region [Hooks]
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
     isSolo && profiles.length === 1 ? profiles[0].id : null
   )
   const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([])
-  const [error, setError] = useState<string | null>(null)
   const setLoading = useFortuneStore((s) => s.setLoading)
   const setResult = useFortuneStore((s) => s.setResult)
   const loading = useFortuneStore((s) => s.loading)
@@ -41,6 +42,19 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
   const canAnalyze = isSolo
     ? !!selectedProfileId
     : selectedProfileIds.length === MAX_DUO_PROFILES
+
+  const profileToBirthForm = (profile: Profile): BirthForm => ({
+    year: profile.year,
+    month: profile.month,
+    day: profile.day,
+    hour: profile.hour,
+    minute: profile.minute,
+    gender: profile.gender,
+    unknownTime: profile.unknownTime,
+    latitude: profile.latitude,
+    longitude: profile.longitude,
+    cityName: profile.cityName,
+  })
   // endregion
 
   const lastAnalyzeTime = useRef(0)
@@ -72,20 +86,24 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
     const ids = isSolo ? (selectedProfileId ? [selectedProfileId] : []) : selectedProfileIds
     if (ids.length === 0) return
 
+    const birthForms = ids
+      .map((id) => profiles.find((p) => p.id === id))
+      .filter((p): p is Profile => !!p)
+      .map((p) => profileToBirthForm(p))
+
     setLoading(true)
-    setError(null)
     onAnalyzeStart?.()
 
-    const res = await analyzeFortuneAction(ids, templateId)
+    const res = await analyzeFortuneAction(birthForms, templateId)
 
     if ('error' in res) {
       setLoading(false)
-      setError(res.error)
+      onError?.(res.error)
     } else {
       setResult(res.result)
       router.push('/fortune/result')
     }
-  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router, onAnalyzeStart])
+  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router, onAnalyzeStart, onError])
   // endregion
 
   if (profiles.length === 0) {
@@ -174,11 +192,6 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
         </Button>
       </div>
 
-      {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-          {error}
-        </div>
-      )}
     </div>
   )
 }

@@ -18,12 +18,12 @@ export default async function AccountPage() {
       <h1 className="mb-6 text-xl font-bold">회원정보</h1>
       <div className="space-y-4">
         {user.image && (
-          <div className="flex justify-center">
+          <div className="flex justify-center my-8">
             <Image
               src={user.image}
               alt={user.name}
-              width={80}
-              height={80}
+              width={124}
+              height={124}
               className="rounded-full"
             />
           </div>

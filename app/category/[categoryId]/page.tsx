@@ -40,6 +40,7 @@ export default async function CategoryPage({ params }: Props) {
       href: `/category/${c.id}`,
       label: c.title,
       icon: c.icon,
+      color: c.color,
     }))
 
   return (

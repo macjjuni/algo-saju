@@ -25,7 +25,7 @@ export default async function ProfileListPage() {
       <div className="max-w-xl mx-auto">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold">프로필 관리</h1>
+          <h1 className="text-xl font-bold">프로필 관리</h1>
           <p className="text-sm text-muted-foreground mt-1">{profiles.length} / {MAX_PROFILES}명</p>
         </div>
         <ProfileAddButton count={profiles.length} />
@@ -40,7 +40,7 @@ export default async function ProfileListPage() {
           </Button>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-4">
           {profiles.map((profile) => (
             <div key={profile.id} className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition-colors hover:bg-white/10">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">

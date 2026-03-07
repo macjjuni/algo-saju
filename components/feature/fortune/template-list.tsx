@@ -16,12 +16,14 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
   // region [Hooks]
   const [selectedTemplate, setSelectedTemplate] = useState<PromptTemplate | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   // endregion
 
   // region [Events]
   const handleTemplateClick = (template: PromptTemplate) => {
     setSelectedTemplate(template)
     setDialogOpen(true)
+    setError(null)
   }
 
   const handleOpenChange = (open: boolean) => {
@@ -39,6 +41,11 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
 
   return (
     <>
+      {error && (
+        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {error}
+        </div>
+      )}
       <h1 className="mb-6 text-lg font-bold">템플릿 선택</h1>
       <div className="flex flex-col gap-3">
         {templates.map((template) => (
@@ -46,9 +53,9 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
             key={template.promptTemplateId}
             type="button"
             onClick={() => handleTemplateClick(template)}
-            className="flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 cursor-pointer px-4 py-5 text-left transition-colors hover:bg-white/10"
+            className="flex flex-col gap-2 max-sm:gap-1 rounded-2xl border border-white/10 bg-white/5 cursor-pointer px-4 py-5 text-left transition-colors hover:bg-white/10"
           >
-            <span className="font-medium text-xl max-sm:text-lg">{template.title}</span>
+            <span className="font-bold text-xl max-sm:text-lg">{template.title}</span>
             {template.description && (
               <span className="text-sm text-muted-foreground">{template.description}</span>
             )}
@@ -67,6 +74,7 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
               templateId={selectedTemplate.promptTemplateId}
               isSolo={selectedTemplate.isSolo}
               onAnalyzeStart={() => setDialogOpen(false)}
+              onError={setError}
             />
           )}
         </DialogContent>

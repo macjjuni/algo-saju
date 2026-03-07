@@ -11,6 +11,7 @@ export interface SidebarMenuItem {
   href: string
   label: string
   icon: LucideIcon | string
+  color?: string
 }
 
 interface SidebarLayoutProps {
@@ -43,7 +44,7 @@ export default function SidebarLayout({ title, menuItems, children }: SidebarLay
         <nav className="md:w-48 shrink-0">
           <h2 className="mb-6 text-lg font-semibold">{title}</h2>
           <ul className="flex md:flex-col gap-1 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 scrollbar-none">
-            {menuItems.map(({ href, label, icon }) => {
+            {menuItems.map(({ href, label, icon, color }) => {
               const isActive = pathname === href
               const Icon = typeof icon === 'string' ? icons[icon as keyof typeof icons] : icon
               return (
@@ -57,7 +58,7 @@ export default function SidebarLayout({ title, menuItems, children }: SidebarLay
                         : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
                     }`}
                   >
-                    {Icon && <Icon className="h-4 w-4" />}
+                    {Icon && <Icon className="h-4 w-4" style={{ color }} />}
                     {label}
                   </Link>
                 </li>

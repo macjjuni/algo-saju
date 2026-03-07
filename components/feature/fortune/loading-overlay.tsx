@@ -12,7 +12,7 @@ export default function FortuneLoadingOverlay() {
   if (!loading) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-10 py-8 shadow-2xl backdrop-blur-md">
         <Lottie animationData={aiAnimation} loop className="h-40 w-40 -mt-6 -mb-4" />
         <div className="flex flex-col items-center gap-1.5">
