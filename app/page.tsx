@@ -64,14 +64,14 @@ export default async function Home() {
             <Star className="h-6 w-6 mb-4"/>
             <h3 className="font-semibold mb-2">다양한 카테고리와 템플릿</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              복잡한 프롬프트 없이, 주제별 템플릿을 선택하는 것만으로 연애운·재물운 등 원하는 운세를 바로 확인하세요.
+              복잡한 프롬프트 없이, 주제별 템플릿을 선택하는 것만으로 연애운·재물운 등 운세를 바로 확인하세요.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
             <Users className="h-6 w-6 mb-4"/>
             <h3 className="font-semibold mb-2">다중 프로필 관리</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              가족과 지인의 사주를 저장하고, 언제든 조회하거나 서로의 궁합까지 확인해보세요.
+              가족과 지인의 프로필을 저장하고, 운세나 서로의 궁합까지 확인해보세요.
             </p>
           </div>
         </div>

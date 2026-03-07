@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { getMe } from '@/api/auth'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
+import InfoCard from '@/components/feature/account/info-card'
 
 export const metadata = {
   title: '회원정보',
@@ -28,22 +29,10 @@ export default async function AccountPage() {
             />
           </div>
         )}
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-          <p className="text-xs text-muted-foreground mb-1">이름</p>
-          <p className="text-sm font-medium">{user.name}</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-          <p className="text-xs text-muted-foreground mb-1">이메일</p>
-          <p className="text-sm font-medium">{user.email}</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-          <p className="text-xs text-muted-foreground mb-1">로그인 방식</p>
-          <p className="text-sm font-medium">{user.provider === 'google' ? 'Google' : user.provider}</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-4">
-          <p className="text-xs text-muted-foreground mb-1">오늘의 무료 이용권</p>
-          <p className="text-sm font-medium">{3 - user.usageCount} / 3</p>
-        </div>
+        <InfoCard label="이름" value={user.name} />
+        <InfoCard label="이메일" value={user.email} />
+        <InfoCard label="로그인 방식" value={user.provider === 'google' ? 'Google' : user.provider} />
+        <InfoCard label="오늘의 무료 이용권" value={`${3 - user.usageCount} / 3`} />
       </div>
     </div>
   )
