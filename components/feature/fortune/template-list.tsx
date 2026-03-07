@@ -66,6 +66,7 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
               profiles={profiles}
               templateId={selectedTemplate.promptTemplateId}
               isSolo={selectedTemplate.isSolo}
+              onAnalyzeStart={() => setDialogOpen(false)}
             />
           )}
         </DialogContent>

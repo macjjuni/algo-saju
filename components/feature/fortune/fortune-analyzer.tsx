@@ -14,11 +14,12 @@ interface FortuneAnalyzerProps {
   profiles: Profile[]
   templateId: number
   isSolo: boolean
+  onAnalyzeStart?: () => void
 }
 
 const MAX_DUO_PROFILES = 2
 
-export default function FortuneAnalyzer({ profiles, templateId, isSolo }: FortuneAnalyzerProps) {
+export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyzeStart }: FortuneAnalyzerProps) {
   // region [Hooks]
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
     isSolo && profiles.length === 1 ? profiles[0].id : null
@@ -73,6 +74,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
 
     setLoading(true)
     setError(null)
+    onAnalyzeStart?.()
 
     const res = await analyzeFortuneAction(ids, templateId)
 
@@ -83,7 +85,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
       setResult(res.result)
       router.push('/fortune/result')
     }
-  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router])
+  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router, onAnalyzeStart])
   // endregion
 
   if (profiles.length === 0) {

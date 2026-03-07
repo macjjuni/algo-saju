@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Markdown from 'react-markdown'
-import { ArrowLeft, Compass, Copy, Check } from 'lucide-react'
+import { Compass, Copy, Check, TriangleAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import GlassPanel from '@/components/ui/glass-panel'
 import { copyToClipboard } from '@/lib/utils'
@@ -17,6 +17,20 @@ export default function FortuneResultPage() {
   const [copied, setCopied] = useState(false)
   // endregion
 
+  // region [Life Cycles]
+  useEffect(() => {
+    if (!result) {
+      router.replace('/category')
+      return
+    }
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [result, router])
+  // endregion
+
   // region [Events]
   const handleCopy = async () => {
     if (!result) return
@@ -26,35 +40,23 @@ export default function FortuneResultPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const handleBack = () => {
-    clear()
-    router.back()
-  }
-
   const handleCategory = () => {
+    if (!confirm('페이지를 떠나면 분석 결과를 다시 확인할 수 없습니다. 이동하시겠습니까?')) return
     clear()
     router.push('/category')
   }
   // endregion
 
-  if (!result) {
-    return (
-      <GlassPanel>
-        <div className="max-w-xl mx-auto flex flex-col items-center gap-3 py-16 text-center">
-          <p className="text-muted-foreground">분석 결과가 없습니다.</p>
-          <Button variant="outline" onClick={handleBack}>
-            <ArrowLeft className="h-4 w-4" />
-            돌아가기
-          </Button>
-        </div>
-      </GlassPanel>
-    )
-  }
+  if (!result) return null
 
   return (
     <GlassPanel>
       <div className="max-w-2xl mx-auto">
         <h1 className="mb-6 text-2xl font-bold">분석 결과</h1>
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-300">
+          <TriangleAlert className="h-4 w-4 mt-0.5 shrink-0" />
+          <p>이 분석 결과는 1회성이며, 페이지를 이탈하면 다시 확인할 수 없습니다. 필요 시 결과를 복사해 보관해 주세요.</p>
+        </div>
         <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-5">
           <div className="prose prose-sm prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-foreground/90">
             <Markdown>{result}</Markdown>
