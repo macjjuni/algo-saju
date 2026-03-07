@@ -1,10 +1,13 @@
-import { notFound } from 'next/navigation'
-import { getTemplates } from '@/api/fortune'
-import GlassPanel from '@/components/ui/glass-panel'
-import TemplateGrid from '@/components/feature/fortune/template-grid'
+import { notFound, redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
+import { getTemplates, getCategories } from '@/api/fortune'
+import { getProfiles } from '@/api/profile'
+import SidebarLayout from '@/components/ui/sidebar-layout'
+import type { SidebarMenuItem } from '@/components/ui/sidebar-layout'
+import TemplateList from '@/components/feature/fortune/template-list'
 
 export const metadata = {
-  title: '운세 선택',
+  title: '템플릿 선택',
 }
 
 interface Props {
@@ -12,6 +15,9 @@ interface Props {
 }
 
 export default async function CategoryPage({ params }: Props) {
+  const session = await auth()
+  if (!session?.backendToken) redirect('/login')
+
   const { categoryId } = await params
 
   let templates
@@ -23,12 +29,22 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!templates || templates.length === 0) notFound()
 
+  const [profiles, categories] = await Promise.all([
+    getProfiles(session.backendToken),
+    getCategories(),
+  ])
+
+  const menuItems: SidebarMenuItem[] = categories
+    .filter((c) => c.isActive)
+    .map((c) => ({
+      href: `/category/${c.id}`,
+      label: c.title,
+      icon: c.icon,
+    }))
+
   return (
-    <GlassPanel>
-      <div className="max-w-xl mx-auto">
-        <h1 className="mb-6 text-2xl font-bold">운세 선택</h1>
-        <TemplateGrid templates={templates} categoryId={categoryId} />
-      </div>
-    </GlassPanel>
+    <SidebarLayout title="운세 카테고리" menuItems={menuItems}>
+      <TemplateList templates={templates} profiles={profiles} categoryId={categoryId} />
+    </SidebarLayout>
   )
 }

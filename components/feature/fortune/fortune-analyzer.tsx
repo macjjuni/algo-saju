@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import { Button } from '@/components/ui/button'
-import { analyzeFortuneAction } from '@/app/category/[categoryId]/[templateId]/actions'
+import { analyzeFortuneAction } from '@/app/category/[categoryId]/actions'
 import { formatBirth } from '@/lib/format'
 import useFortuneStore from '@/store/useFortuneStore'
 
@@ -88,11 +88,19 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
 
   if (profiles.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 py-16 text-center">
-        <UserRound className="h-12 w-12 text-muted-foreground/40"/>
-        <p className="text-muted-foreground">등록된 프로필이 없습니다.</p>
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-white/10 bg-white/5 px-6 py-12 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+          <UserRoundPlus className="h-8 w-8 text-muted-foreground/60"/>
+        </div>
+        <div className="space-y-1">
+          <p className="font-medium">등록된 프로필이 없습니다</p>
+          <p className="text-sm text-muted-foreground">운세 분석을 위해 프로필을 먼저 추가해 주세요.</p>
+        </div>
         <Button asChild className="mt-2">
-          <Link href="/profile/new">프로필 만들기</Link>
+          <Link href="/profile/new">
+            <UserRoundPlus className="h-4 w-4"/>
+            프로필 추가하기
+          </Link>
         </Button>
       </div>
     )
@@ -102,8 +110,9 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
     <div className="space-y-6">
       <div>
         <h2 className="mb-3 text-lg font-semibold">
-          프로필 선택 {!isSolo && <span
-            className="text-sm font-normal text-muted-foreground">({selectedProfileIds.length}/{MAX_DUO_PROFILES})</span>}
+          <span className="text-sm font-normal text-muted-foreground">
+            ({isSolo ? (selectedProfileId ? 1 : 0) : selectedProfileIds.length}/{isSolo ? 1 : MAX_DUO_PROFILES})
+          </span>
         </h2>
         <div className="space-y-2">
           {profiles.map((profile) => {
@@ -118,7 +127,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo }: Fortun
                 disabled={disabledDuo}
                 className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 cursor-pointer text-left transition-colors ${
                   selected
-                    ? 'border-white/40 bg-white/15'
+                    ? 'border-white/70 bg-white/15'
                     : disabledDuo
                       ? 'border-white/5 bg-white/[0.02] opacity-40 cursor-not-allowed'
                       : 'border-white/10 bg-white/5 hover:bg-white/10'
