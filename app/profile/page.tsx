@@ -8,8 +8,6 @@ import ProfileDeleteButton from '@/components/feature/profile/profile-delete-but
 import { formatBirth } from '@/lib/format'
 import { MAX_PROFILES } from '@/lib/constants'
 import ProfileAddButton from '@/components/feature/profile/profile-add-button'
-import GlassPanel from '@/components/ui/glass-panel'
-
 export const metadata = {
   title: '프로필 관리',
 }
@@ -21,8 +19,7 @@ export default async function ProfileListPage() {
   const profiles = await getProfiles(session.backendToken)
 
   return (
-    <GlassPanel>
-      <div className="max-w-xl mx-auto">
+    <>
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-xl font-bold">프로필 관리</h1>
@@ -62,7 +59,6 @@ export default async function ProfileListPage() {
           ))}
         </div>
       )}
-      </div>
-    </GlassPanel>
+    </>
   )
 }

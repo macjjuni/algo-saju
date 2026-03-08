@@ -5,7 +5,6 @@ import { toast } from 'sonner'
 import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
 import type { CreateProfileRequest } from '@/api/profile'
 import type { BirthFormValues } from '@/lib/schema'
-import GlassPanel from '@/components/ui/glass-panel'
 import ProfileForm from './profile-form'
 
 interface ProfileFormPageProps {
@@ -36,11 +35,9 @@ export default function ProfileFormPage({ title, defaultValues, profileId, submi
   // endregion
 
   return (
-    <GlassPanel>
-      <div className="max-w-lg mx-auto">
-        <h1 className="mb-6 text-center text-2xl font-bold">{title}</h1>
-        <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel} hidePrivacyConsent={!!profileId}/>
-      </div>
-    </GlassPanel>
+    <div className="max-w-lg mx-auto">
+      <h1 className="mb-6 text-center text-2xl font-bold">{title}</h1>
+      <ProfileForm defaultValues={defaultValues} onSubmit={onSubmit} submitLabel={submitLabel} hidePrivacyConsent={!!profileId}/>
+    </div>
   )
 }
