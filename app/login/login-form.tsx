@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
@@ -74,6 +75,13 @@ export default function LoginForm() {
             </svg>
             Google 로그인
           </Button>
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
+            로그인 시{' '}
+            <Link href="/terms" className="underline hover:text-muted-foreground">이용약관</Link>
+            {' '}및{' '}
+            <Link href="/privacy" className="underline hover:text-muted-foreground">개인정보처리방침</Link>
+            에 동의하는 것으로 간주합니다.
+          </p>
         </div>
       </div>
     </div>
