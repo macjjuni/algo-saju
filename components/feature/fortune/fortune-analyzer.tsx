@@ -8,6 +8,7 @@ import type { Profile } from '@/api/profile'
 import type { BirthForm } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { analyzeFortuneAction } from '@/app/category/[categoryId]/actions'
+import { encrypt } from '@/lib/crypto'
 import { formatBirth } from '@/lib/format'
 import useFortuneStore from '@/store/useFortuneStore'
 
@@ -94,7 +95,8 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
     setLoading(true)
     onAnalyzeStart?.()
 
-    const res = await analyzeFortuneAction(birthForms, templateId)
+    const encryptedData = await encrypt(JSON.stringify(birthForms))
+    const res = await analyzeFortuneAction(encryptedData, templateId)
 
     if (!res.success) {
       setLoading(false)

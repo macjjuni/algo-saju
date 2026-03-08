@@ -4,14 +4,23 @@ import { auth } from '@/lib/auth'
 import { ApiError } from '@/lib/api-client'
 import { requestFortune } from '@/api/fortune'
 import { buildChartData } from '@/lib/build-chart-data'
+import { decrypt } from '@/lib/crypto'
 import type { BirthForm, ActionResult } from '@/lib/types'
 
 export async function analyzeFortuneAction(
-  birthForms: BirthForm[],
+  encryptedData: string,
   templateId: number
 ): Promise<ActionResult<string>> {
   const session = await auth()
   if (!session?.backendToken) return { success: false, code: 'UNAUTHORIZED', error: '로그인이 필요합니다.' }
+
+  let birthForms: BirthForm[]
+  try {
+    const decrypted = await decrypt(encryptedData)
+    birthForms = JSON.parse(decrypted) as BirthForm[]
+  } catch {
+    return { success: false, code: 'INTERNAL_ERROR', error: '데이터 복호화에 실패했습니다.' }
+  }
 
   const chartDataParts = await Promise.all(
     birthForms.map((form) => buildChartData(form))
