@@ -13,7 +13,7 @@ export default async function Home() {
       {/* Hero */}
       <section className="flex flex-col items-center text-center pt-20 pb-24 max-w-4xl w-full">
         <div
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/5 px-4 py-1.5 text-xs text-white/70 backdrop-blur">
           <Sparkles className="h-3 w-3"/>
           AI 기반 운세 분석 플랫폼
         </div>
@@ -51,7 +51,7 @@ export default async function Home() {
 
       {/* Features */}
       <section id="features" className="w-full max-w-4xl py-20 max-lg:pb-10">
-        <h2 className="text-center text-2xl font-bold mb-12"><u>&quot;{process.env.NEXT_PUBLIC_APP_NAME}&quot;</u>는 이런 서비스예요</h2>
+        <h2 className="text-center text-2xl font-bold mb-12"><u>&quot;알고사주&quot;</u>는 이런 서비스예요</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
             <Brain className="h-6 w-6 mb-4"/>
