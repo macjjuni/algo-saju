@@ -3,6 +3,10 @@
 import { useState, useMemo } from "react";
 import { KOREAN_CITIES, type City } from "@orrery/core";
 import { Button } from "@/components/ui/button";
+
+// 권역별 대표 도시만 사용
+const REGION_CITY_NAMES = ["서울", "대전", "광주", "대구", "부산", "춘천", "제주"];
+const REGION_CITIES = KOREAN_CITIES.filter((c) => REGION_CITY_NAMES.includes(c.name));
 import {
   Command,
   CommandEmpty,
@@ -31,8 +35,8 @@ export default function CityPicker({ value, onChange }: CityPickerProps) {
   // region [Privates]
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return KOREAN_CITIES;
-    return KOREAN_CITIES.filter((c) => c.name.toLowerCase().includes(q));
+    if (!q) return REGION_CITIES;
+    return REGION_CITIES.filter((c) => c.name.toLowerCase().includes(q));
   }, [query]);
   // endregion
 
