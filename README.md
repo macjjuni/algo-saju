@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 알고사주
 
-## Getting Started
+AI 알고리즘 기반 사주/운세 분석 서비스
 
-First, run the development server:
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.algosaju.app&label=algosaju.app)](https://www.algosaju.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 소개
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+알고사주는 사주팔자, 자미두수, 네이탈 차트 등 동서양의 명리학 데이터를 AI가 종합 분석하여 운세를 제공하는 웹 서비스입니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 주요 기능
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **사주/운세 분석** — 생년월일시 기반 사주팔자, 자미두수, 네이탈 차트를 AI가 종합 분석
+- **다양한 운세 카테고리** — 오늘의 운세, 연애운, 재물운 등 다양한 주제의 분석 제공
+- **프로필 관리** — 최대 10개의 프로필을 등록하여 간편하게 분석 요청
+- **Google 소셜 로그인** — 별도 가입 절차 없이 간편 로그인
 
-## Learn More
+## 기술 스택
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 라이선스
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+이 프로젝트는 [AGPL-3.0](LICENSE) 라이선스를 따릅니다.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+사주/운세 계산에 사용되는 [@orrery/core](https://www.npmjs.com/package/@orrery/core)는 AGPL-3.0 라이선스로 제공됩니다.
