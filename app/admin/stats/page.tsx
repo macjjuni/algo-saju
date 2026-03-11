@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
 import { getAdminStats, getTemplateStats } from "@/api/admin";
+import type { AdminStats, CategoryStatItem } from "@/api/admin";
 import StatsCards from "@/components/feature/admin/stats-cards";
 import StatsChart from "@/components/feature/admin/stats-chart";
 import TemplateStatsTable from "@/components/feature/admin/template-stats-table";
@@ -9,8 +10,8 @@ export default async function AdminStatsPage() {
   const session = await requireAdmin();
   if (!session) redirect("/");
 
-  let stats = null;
-  let templateStats = null;
+  let stats: AdminStats | null = null;
+  let templateStats: CategoryStatItem[] | null = null;
   try {
     if (session.backendToken) {
       [stats, templateStats] = await Promise.all([
