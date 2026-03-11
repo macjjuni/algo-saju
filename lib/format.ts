@@ -46,6 +46,23 @@ export function formatBirth(p: {
   return `${date} ${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`;
 }
 
+/** 문자열 마스킹 (이름: 홍*동, 이메일: ho***@gmail.com) */
+export function maskString(value: string): string {
+  if (!value) return "-";
+
+  // 이메일
+  if (value.includes("@")) {
+    const [local, domain] = value.split("@");
+    if (local.length <= 2) return `${local[0]}***@${domain}`;
+    return `${local.slice(0, 2)}***@${domain}`;
+  }
+
+  // 일반 문자열 (이름 등)
+  if (value.length <= 1) return value;
+  if (value.length === 2) return `${value[0]}*`;
+  return `${value[0]}${"*".repeat(value.length - 2)}${value[value.length - 1]}`;
+}
+
 export function formatRelation(rel: RelationResult): string {
   if (rel.detail === null) return rel.type;
   if (ELEMENT_HANJA[rel.detail]) return `${rel.type}${ELEMENT_HANJA[rel.detail]}`;

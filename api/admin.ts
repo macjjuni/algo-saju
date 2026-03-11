@@ -7,30 +7,42 @@ export interface AdminUser {
   email: string;
   name: string;
   image: string | null;
-  profileCount: number;
-  fortuneCount: number;
+  provider: string;
+  totalFortuneCount: number;
   createdAt: string;
-  lastLoginAt: string;
 }
 
 export interface AdminUserDetail extends AdminUser {
-  profiles: {
-    id: string;
-    name: string;
-    createdAt: string;
-  }[];
+  updatedAt: string;
+  usageCount: number;
+}
+
+export interface DailyStat {
+  date: string;
+  fortuneCount: number;
 }
 
 export interface AdminStats {
   totalUsers: number;
-  totalProfiles: number;
-  totalFortunes: number;
-  todayFortunes: number;
-  dailyStats: {
-    date: string;
-    users: number;
-    fortunes: number;
-  }[];
+  totalFortuneCalls: number;
+  todayFortuneCalls: number;
+  dailyStats: DailyStat[];
+}
+
+export interface TemplateStatItem {
+  templateId: number;
+  title: string;
+  usageCount: number;
+}
+
+export interface CategoryStatItem {
+  categoryId: string;
+  categoryTitle: string;
+  templates: TemplateStatItem[];
+}
+
+export interface TemplateStatsResponse {
+  templateStats: CategoryStatItem[];
 }
 
 export interface Announcement {
@@ -54,21 +66,27 @@ export interface UpdateAnnouncementRequest {
   isPublished: boolean;
 }
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
+export interface AdminUsersResponse {
+  users: AdminUser[];
+  totalCount: number;
 }
 
 // endregion
 
 // region [Stats]
 
-export async function getAdminStats(token: string): Promise<AdminStats> {
-  return apiClient<AdminStats>("/api/v1/admin/stats", {
+export async function getAdminStats(token: string, days?: number): Promise<AdminStats> {
+  const query = days ? `?days=${days}` : "";
+  return apiClient<AdminStats>(`/api/v1/admin/stats${query}`, {
     headers: authHeaders(token),
   });
+}
+
+export async function getTemplateStats(token: string): Promise<CategoryStatItem[]> {
+  const res = await apiClient<TemplateStatsResponse>("/api/v1/admin/template-stats", {
+    headers: authHeaders(token),
+  });
+  return res.templateStats;
 }
 
 // endregion
@@ -77,13 +95,14 @@ export async function getAdminStats(token: string): Promise<AdminStats> {
 
 export async function getAdminUsers(
   token: string,
-  params: { page?: number; search?: string } = {},
-): Promise<PaginatedResponse<AdminUser>> {
+  params: { page?: number; pageSize?: number; search?: string } = {},
+): Promise<AdminUsersResponse> {
   const query = new URLSearchParams();
   if (params.page) query.set("page", String(params.page));
+  if (params.pageSize) query.set("pageSize", String(params.pageSize));
   if (params.search) query.set("search", params.search);
   const qs = query.toString();
-  return apiClient<PaginatedResponse<AdminUser>>(`/api/v1/admin/users${qs ? `?${qs}` : ""}`, {
+  return apiClient<AdminUsersResponse>(`/api/v1/admin/users${qs ? `?${qs}` : ""}`, {
     headers: authHeaders(token),
   });
 }

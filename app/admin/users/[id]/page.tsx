@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAdminUser } from "@/api/admin";
+import { getAdminUser, type AdminUserDetail } from "@/api/admin";
+import { ApiError } from "@/lib/api-client";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -14,11 +15,16 @@ export default async function AdminUserDetailPage({ params }: Props) {
 
   const { id } = await params;
 
-  let user = null;
+  let user: AdminUserDetail | null = null;
+  let error = "";
   try {
-    user = session.backendToken ? await getAdminUser(session.backendToken, id) : null;
-  } catch {
-    // 백엔드 미구현 시 null
+    if (session.backendToken) {
+      user = await getAdminUser(session.backendToken, id);
+    }
+  } catch (err) {
+    error = err instanceof ApiError
+      ? err.status === 404 ? "존재하지 않는 사용자입니다." : err.message
+      : "사용자 정보를 불러올 수 없습니다.";
   }
 
   return (
@@ -28,45 +34,44 @@ export default async function AdminUserDetailPage({ params }: Props) {
         사용자 목록
       </Link>
 
-      {user ? (
-        <div className="space-y-4">
-          <h1 className="text-xl font-bold">{user.name}</h1>
-          <dl className="grid grid-cols-2 gap-4 text-sm">
+      {error ? (
+        <p className="text-sm text-red-400">{error}</p>
+      ) : user ? (
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            {user.image && (
+              <img src={user.image} alt="" className="h-10 w-10 rounded-full" />
+            )}
             <div>
-              <dt className="text-muted-foreground">이메일</dt>
-              <dd>{user.email}</dd>
+              <h1 className="text-xl font-bold">{user.name || "-"}</h1>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
-            <div>
-              <dt className="text-muted-foreground">프로필 수</dt>
-              <dd>{user.profileCount}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">운세 분석 수</dt>
-              <dd>{user.fortuneCount}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">가입일</dt>
-              <dd>{new Date(user.createdAt).toLocaleDateString("ko-KR")}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground">마지막 로그인</dt>
-              <dd>{new Date(user.lastLoginAt).toLocaleDateString("ko-KR")}</dd>
-            </div>
-          </dl>
+          </div>
 
-          {user.profiles.length > 0 && (
-            <div>
-              <h2 className="text-lg font-semibold mb-2">프로필 목록</h2>
-              <ul className="space-y-1 text-sm">
-                {user.profiles.map((profile) => (
-                  <li key={profile.id} className="flex justify-between py-1 border-b border-white/5">
-                    <span>{profile.name}</span>
-                    <span className="text-muted-foreground">{new Date(profile.createdAt).toLocaleDateString("ko-KR")}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <dt className="text-xs text-muted-foreground">로그인 방식</dt>
+              <dd className="text-lg font-semibold">{user.provider}</dd>
             </div>
-          )}
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <dt className="text-xs text-muted-foreground">운세 분석 수</dt>
+              <dd className="text-lg font-semibold">{user.totalFortuneCount ?? 0}</dd>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <dt className="text-xs text-muted-foreground">이용 횟수</dt>
+              <dd className="text-lg font-semibold">{user.usageCount ?? 0}</dd>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <dt className="text-xs text-muted-foreground">가입일</dt>
+              <dd className="text-lg font-semibold">
+                {user.createdAt ? new Date(user.createdAt).toLocaleDateString("ko-KR") : "-"}
+              </dd>
+            </div>
+          </div>
+
+          <div className="text-xs text-muted-foreground">
+            마지막 활동: {user.updatedAt ? new Date(user.updatedAt).toLocaleDateString("ko-KR") : "-"}
+          </div>
         </div>
       ) : (
         <p className="text-muted-foreground">사용자 정보를 불러올 수 없습니다.</p>

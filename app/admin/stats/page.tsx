@@ -1,16 +1,23 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAdminStats } from "@/api/admin";
+import { getAdminStats, getTemplateStats } from "@/api/admin";
 import StatsCards from "@/components/feature/admin/stats-cards";
-import StatsTable from "@/components/feature/admin/stats-table";
+import StatsChart from "@/components/feature/admin/stats-chart";
+import TemplateStatsTable from "@/components/feature/admin/template-stats-table";
 
 export default async function AdminStatsPage() {
   const session = await requireAdmin();
   if (!session) redirect("/");
 
   let stats = null;
+  let templateStats = null;
   try {
-    stats = session.backendToken ? await getAdminStats(session.backendToken) : null;
+    if (session.backendToken) {
+      [stats, templateStats] = await Promise.all([
+        getAdminStats(session.backendToken),
+        getTemplateStats(session.backendToken),
+      ]);
+    }
   } catch {
     // 백엔드 미구현 시 null
   }
@@ -22,15 +29,15 @@ export default async function AdminStatsPage() {
         <>
           <StatsCards
             totalUsers={stats.totalUsers}
-            totalProfiles={stats.totalProfiles}
-            totalFortunes={stats.totalFortunes}
-            todayFortunes={stats.todayFortunes}
+            totalFortuneCalls={stats.totalFortuneCalls}
+            todayFortuneCalls={stats.todayFortuneCalls}
           />
-          <StatsTable dailyStats={stats.dailyStats} />
+          <StatsChart dailyStats={stats.dailyStats ?? []} />
         </>
       ) : (
         <p className="text-muted-foreground">통계 데이터를 불러올 수 없습니다. 백엔드 API를 확인해주세요.</p>
       )}
+      {templateStats && <TemplateStatsTable templateStats={templateStats} />}
     </div>
   );
 }
