@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { promptTemplateSchema, type PromptTemplateFormValues } from "@/lib/admin-schema";
 import { createPromptTemplateAction, updatePromptTemplateAction } from "@/app/admin/templates/actions";
 import type { Category } from "@/api/fortune";
+import Alert from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -74,6 +75,18 @@ export default function TemplateForm({ templateId, categories, defaultValues }: 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Alert>
+        <div className="space-y-1">
+          <p>카테고리, 제목, 설명, 템플릿 내용, 정렬 순서는 필수 항목입니다.</p>
+          <p>템플릿 내용에서 사용 가능한 치환 변수:</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            <li><code className="rounded bg-blue-500/15 px-1 py-0.5 font-mono text-xs">{"{{chartData}}"}</code> — 사용자의 사주 명식 데이터 <span className="text-blue-400">(필수)</span></li>
+            <li><code className="rounded bg-blue-500/15 px-1 py-0.5 font-mono text-xs">{"{{today}}"}</code> — 오늘 날짜 (년월일)</li>
+            <li><code className="rounded bg-blue-500/15 px-1 py-0.5 font-mono text-xs">{"{{targetYear}}"}</code> — 당해 년도</li>
+          </ul>
+        </div>
+      </Alert>
+
       <div>
         <Label className="mb-2">카테고리</Label>
         {mounted ? (
