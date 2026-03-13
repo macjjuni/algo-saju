@@ -154,3 +154,26 @@ export async function deleteAnnouncement(token: string, id: number): Promise<voi
 }
 
 // endregion
+
+// region [Models]
+
+export interface GeminiModelResponse {
+  currentModel: string;
+  models: string[];
+}
+
+export async function getGeminiModel(token: string): Promise<GeminiModelResponse> {
+  return apiClient<GeminiModelResponse>("/api/v1/admin/gemini-model", {
+    headers: authHeaders(token),
+  });
+}
+
+export async function updateGeminiModel(token: string, model: string): Promise<GeminiModelResponse> {
+  return apiClient<GeminiModelResponse>("/api/v1/admin/gemini-model", {
+    method: "PUT",
+    headers: authHeaders(token),
+    body: { model },
+  });
+}
+
+// endregion

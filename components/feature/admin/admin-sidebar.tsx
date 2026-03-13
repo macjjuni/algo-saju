@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Users, Megaphone } from "lucide-react";
+import { BarChart3, Users, Megaphone, Bot } from "lucide-react";
 import SidebarLayout from "@/components/ui/sidebar-layout";
 import type { SidebarMenuItem } from "@/components/ui/sidebar-layout";
 
@@ -8,6 +8,7 @@ const menuItems: SidebarMenuItem[] = [
   { href: "/admin/stats", label: "통계", icon: BarChart3 },
   { href: "/admin/users", label: "사용자 관리", icon: Users },
   { href: "/admin/announcements", label: "공지사항", icon: Megaphone },
+  { href: "/admin/models", label: "모델 설정", icon: Bot },
 ];
 
 export default function AdminSidebar({ children }: { children: React.ReactNode }) {
