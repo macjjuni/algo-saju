@@ -2,10 +2,9 @@ import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
 import { getAdminUsers, type AdminUsersResponse } from "@/api/admin";
 import { ApiError } from "@/lib/api-client";
+import { parsePaginationParams } from "@/lib/pagination";
 import UserSearchForm from "@/components/feature/admin/user-search-form";
 import UserList from "@/components/feature/admin/user-list";
-
-const DEFAULT_PAGE_SIZE = 20;
 
 interface Props {
   searchParams: Promise<{ page?: string; pageSize?: string; search?: string }>;
@@ -16,8 +15,7 @@ export default async function AdminUsersPage({ searchParams }: Props) {
   if (!session) redirect("/");
 
   const params = await searchParams;
-  const page = Math.max(1, Number(params.page) || 1);
-  const pageSize = Math.min(100, Math.max(1, Number(params.pageSize) || DEFAULT_PAGE_SIZE));
+  const { page, pageSize } = parsePaginationParams(params);
   const search = params.search || "";
 
   let data: AdminUsersResponse | null = null;

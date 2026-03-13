@@ -47,6 +47,7 @@ export default function StatsChart({ dailyStats }: StatsChartProps) {
               tickLine={false}
             />
             <YAxis
+              width={24}
               tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
               axisLine={false}
               tickLine={false}

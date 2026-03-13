@@ -155,6 +155,91 @@ export async function deleteAnnouncement(token: string, id: number): Promise<voi
 
 // endregion
 
+// region [Prompt Templates]
+
+export interface AdminPromptTemplate {
+  id: number;
+  title: string;
+  description: string;
+  template: string;
+  parentId: string | null;
+  isActive: boolean;
+  isSolo: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminPromptTemplateCreateRequest {
+  title: string;
+  description: string;
+  template: string;
+  parentId?: string;
+  isActive?: boolean;
+  isSolo?: boolean;
+  sortOrder?: number;
+}
+
+export interface AdminPromptTemplateUpdateRequest {
+  title: string;
+  description: string;
+  template: string;
+  parentId: string | null;
+  isActive: boolean;
+  isSolo: boolean;
+  sortOrder: number;
+}
+
+export interface AdminPromptTemplatesResponse {
+  promptTemplates: AdminPromptTemplate[];
+  totalCount: number;
+}
+
+export async function getPromptTemplates(
+  token: string,
+  params: { page?: number; pageSize?: number; parentId?: string } = {},
+): Promise<AdminPromptTemplatesResponse> {
+  const query = new URLSearchParams();
+  if (params.page) query.set("page", String(params.page));
+  if (params.pageSize) query.set("pageSize", String(params.pageSize));
+  if (params.parentId) query.set("parentId", params.parentId);
+  const qs = query.toString();
+  return apiClient<AdminPromptTemplatesResponse>(`/api/v1/admin/prompt-templates${qs ? `?${qs}` : ""}`, {
+    headers: authHeaders(token),
+  });
+}
+
+export async function createPromptTemplate(token: string, body: AdminPromptTemplateCreateRequest): Promise<AdminPromptTemplate> {
+  return apiClient<AdminPromptTemplate>("/api/v1/admin/prompt-templates", {
+    method: "POST",
+    headers: authHeaders(token),
+    body,
+  });
+}
+
+export async function getPromptTemplate(token: string, id: number): Promise<AdminPromptTemplate> {
+  return apiClient<AdminPromptTemplate>(`/api/v1/admin/prompt-templates/${id}`, {
+    headers: authHeaders(token),
+  });
+}
+
+export async function updatePromptTemplate(token: string, id: number, body: AdminPromptTemplateUpdateRequest): Promise<AdminPromptTemplate> {
+  return apiClient<AdminPromptTemplate>(`/api/v1/admin/prompt-templates/${id}`, {
+    method: "PUT",
+    headers: authHeaders(token),
+    body,
+  });
+}
+
+export async function deletePromptTemplate(token: string, id: number): Promise<void> {
+  await apiClient<void>(`/api/v1/admin/prompt-templates/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(token),
+  });
+}
+
+// endregion
+
 // region [Models]
 
 export interface GeminiModelResponse {

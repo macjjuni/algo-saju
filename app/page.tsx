@@ -54,21 +54,21 @@ export default async function Home() {
         <h2 className="text-center text-2xl font-bold mb-12"><u>&quot;알고사주&quot;</u>는 이런 서비스예요</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-            <Brain className="h-6 w-6 mb-4"/>
+            <Brain className="h-6 w-6 mb-4" color="#2962FF"/>
             <h3 className="font-semibold mb-2">알고리즘 기반 해석</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               전통 사주 이론에 현대 알고리즘을 결합해 객관적이고 체계적인 해석을 제공합니다.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-            <Star className="h-6 w-6 mb-4"/>
+            <Star className="h-6 w-6 mb-4" color="#FFD700"/>
             <h3 className="font-semibold mb-2">다양한 카테고리와 템플릿</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               복잡한 프롬프트 없이, 주제별 템플릿을 선택하는 것만으로 연애운·재물운 등 운세를 바로 확인하세요.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-            <Users className="h-6 w-6 mb-4"/>
+            <Users className="h-6 w-6 mb-4" color="#10B981"/>
             <h3 className="font-semibold mb-2">다중 프로필 관리</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               가족과 지인의 프로필을 저장하고, 운세나 서로의 궁합까지 확인해보세요.

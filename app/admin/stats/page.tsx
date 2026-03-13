@@ -25,7 +25,7 @@ export default async function AdminStatsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold">통계 대시보드</h1>
+      <h1 className="text-lg font-semibold mb-3">통계 대시보드</h1>
       {stats ? (
         <>
           <StatsCards

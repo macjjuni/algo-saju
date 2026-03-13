@@ -14,7 +14,7 @@ const cards = [
 
 export default function StatsCards(props: StatsCardsProps) {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {cards.map(({ key, label, icon: Icon }) => (
         <div key={key} className="rounded-xl border border-white/10 bg-white/5 p-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
