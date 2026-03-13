@@ -34,7 +34,7 @@ export default async function AdminUsersPage({ searchParams }: Props) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">사용자 관리</h1>
+        <h3 className="text-lg font-bold">사용자 관리</h3>
         {data && (
           <span className="text-sm text-muted-foreground">
             총 <span className="font-semibold text-foreground">{totalCount.toLocaleString("ko-KR")}</span>명

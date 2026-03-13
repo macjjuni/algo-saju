@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import useScrollDirection from "@/hooks/use-scroll-direction";
 import useOutsideClick from "@/hooks/use-outside-click";
 import AuthButton from "@/components/common/auth-button";
+import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   isAuthenticated: boolean;
@@ -66,14 +67,15 @@ export default function Header({ isAuthenticated }: HeaderProps) {
         </nav>
 
         {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          className="ml-auto md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto md:hidden text-foreground/70 hover:text-foreground"
           onClick={toggleMobileMenu}
           aria-label={mobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        </Button>
       </div>
 
       {/* Mobile Navigation */}

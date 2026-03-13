@@ -43,7 +43,7 @@ export default async function AdminUserDetailPage({ params }: Props) {
               <img src={user.image} alt="" className="h-10 w-10 rounded-full" />
             )}
             <div>
-              <h1 className="text-xl font-bold">{user.name || "-"}</h1>
+              <h3 className="text-lg font-bold">{user.name || "-"}</h3>
               <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>

@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface UserSearchFormProps {
   defaultSearch: string;
@@ -39,12 +40,9 @@ export default function UserSearchForm({ defaultSearch }: UserSearchFormProps) {
           className="w-full rounded-lg border border-white/10 bg-white/5 py-2 pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
-      <button
-        type="submit"
-        className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-      >
+      <Button type="submit">
         검색
-      </button>
+      </Button>
     </form>
   );
 }

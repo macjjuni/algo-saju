@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 interface PaginationProps {
   page: number;
   totalPages: number;
@@ -9,37 +11,21 @@ export default function Pagination({ page, totalPages, onPageChange }: Paginatio
 
   return (
     <div className="flex justify-center items-center gap-2">
-      <button
-        onClick={() => onPageChange(1)}
-        disabled={page <= 1}
-        className="rounded-lg px-2 py-1 text-sm border border-white/10 disabled:opacity-50 hover:bg-white/5"
-      >
+      <Button variant="outline" size="sm" onClick={() => onPageChange(1)} disabled={page <= 1}>
         처음
-      </button>
-      <button
-        onClick={() => onPageChange(page - 1)}
-        disabled={page <= 1}
-        className="rounded-lg px-3 py-1 text-sm border border-white/10 disabled:opacity-50 hover:bg-white/5"
-      >
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1}>
         이전
-      </button>
+      </Button>
       <span className="text-sm text-muted-foreground px-2">
         {page} / {totalPages}
       </span>
-      <button
-        onClick={() => onPageChange(page + 1)}
-        disabled={page >= totalPages}
-        className="rounded-lg px-3 py-1 text-sm border border-white/10 disabled:opacity-50 hover:bg-white/5"
-      >
+      <Button variant="outline" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>
         다음
-      </button>
-      <button
-        onClick={() => onPageChange(totalPages)}
-        disabled={page >= totalPages}
-        className="rounded-lg px-2 py-1 text-sm border border-white/10 disabled:opacity-50 hover:bg-white/5"
-      >
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => onPageChange(totalPages)} disabled={page >= totalPages}>
         마지막
-      </button>
+      </Button>
     </div>
   );
 }

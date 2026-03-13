@@ -7,6 +7,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { AdminPromptTemplate } from "@/api/admin";
 import type { Category } from "@/api/fortune";
 import { deletePromptTemplateAction } from "@/app/admin/templates/actions";
+import { Button } from "@/components/ui/button";
 import { usePagination } from "@/hooks/use-pagination";
 import Pagination from "@/components/ui/pagination";
 import {
@@ -70,28 +71,24 @@ export default function TemplateList({ templates, totalCount, page, pageSize, ca
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        <button
+        <Button
+          variant={!currentParentId ? "default" : "outline"}
+          size="sm"
           onClick={() => handleCategoryChange("")}
-          className={`rounded-full px-3 py-1 text-sm transition-colors ${
-            !currentParentId
-              ? "bg-primary text-primary-foreground"
-              : "border border-white/10 hover:bg-white/5"
-          }`}
+          className="rounded-full"
         >
           전체
-        </button>
+        </Button>
         {categories.map((c) => (
-          <button
+          <Button
             key={c.id}
+            variant={currentParentId === c.id ? "default" : "outline"}
+            size="sm"
             onClick={() => handleCategoryChange(c.id)}
-            className={`rounded-full px-3 py-1 text-sm transition-colors ${
-              currentParentId === c.id
-                ? "bg-primary text-primary-foreground"
-                : "border border-white/10 hover:bg-white/5"
-            }`}
+            className="rounded-full"
           >
             {c.title}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -145,13 +142,9 @@ export default function TemplateList({ templates, totalCount, page, pageSize, ca
                         >
                           <Pencil className="h-4 w-4" />
                         </Link>
-                        <button
-                          onClick={() => handleDelete(t.id)}
-                          disabled={isPending}
-                          className="rounded p-1.5 hover:bg-white/10 text-red-400 disabled:opacity-50"
-                        >
+                        <Button variant="ghost" size="icon-sm" onClick={() => handleDelete(t.id)} disabled={isPending} className="text-red-400">
                           <Trash2 className="h-4 w-4" />
-                        </button>
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

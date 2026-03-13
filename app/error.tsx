@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import GlassPanel from '@/components/ui/glass-panel'
+import { Button } from '@/components/ui/button'
 
 export default function GlobalError() {
   // region [Hooks]
@@ -33,13 +34,9 @@ export default function GlobalError() {
         </div>
 
         {/* CTA */}
-        <button
-          type="button"
-          onClick={handleRetry}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-sm font-medium transition-all hover:bg-white/10 hover:border-white/20 cursor-pointer"
-        >
+        <Button variant="outline" onClick={handleRetry}>
           다시 시도하기
-        </button>
+        </Button>
       </div>
     </GlassPanel>
   )

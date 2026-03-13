@@ -19,8 +19,8 @@ export default async function EditAnnouncementPage({ params }: Props) {
   let announcement = null;
   try {
     announcement = session.backendToken ? await getAnnouncement(session.backendToken, announcementId) : null;
-  } catch {
-    // 백엔드 미구현 시 null
+  } catch (error) {
+    console.error("공지사항 조회 실패:", error);
   }
 
   return (
@@ -29,7 +29,7 @@ export default async function EditAnnouncementPage({ params }: Props) {
         <ArrowLeft className="h-4 w-4" />
         공지사항 목록
       </Link>
-      <h1 className="text-xl font-bold">공지사항 수정</h1>
+      <h3 className="text-lg font-bold">공지사항 수정</h3>
       {announcement ? (
         <AnnouncementForm
           announcementId={announcementId}

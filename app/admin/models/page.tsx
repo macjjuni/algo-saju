@@ -19,7 +19,7 @@ export default async function AdminModelsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold">모델 설정</h1>
+      <h3 className="text-lg font-bold">모델 설정</h3>
       <ModelSettings currentModel={data?.currentModel ?? null} models={data?.models ?? null} />
     </div>
   );

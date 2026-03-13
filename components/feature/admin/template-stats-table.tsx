@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { CategoryStatItem } from "@/api/admin";
+import { Button } from "@/components/ui/button";
 
 interface TemplateStatsTableProps {
   templateStats: CategoryStatItem[];
@@ -44,17 +45,19 @@ export default function TemplateStatsTable({ templateStats }: TemplateStatsTable
 
       <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
         {templateStats.map((category, index) => (
-          <button
+          <Button
             key={category.categoryId}
+            variant="ghost"
+            size="sm"
             onClick={() => setActiveTab(index)}
-            className={`shrink-0 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+            className={`shrink-0 ${
               activeTab === index
                 ? "bg-white/10 text-foreground font-medium"
-                : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                : "text-muted-foreground"
             }`}
           >
             {category.categoryTitle}
-          </button>
+          </Button>
         ))}
       </div>
 

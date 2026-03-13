@@ -17,7 +17,7 @@ export default async function NewTemplatePage() {
         <ArrowLeft className="h-4 w-4" />
         템플릿 목록
       </Link>
-      <h1 className="text-xl font-bold">새 템플릿</h1>
+      <h3 className="text-lg font-bold">새 템플릿</h3>
       <TemplateForm categories={categories} />
     </div>
   );

@@ -42,7 +42,7 @@ export default async function AdminTemplatesPage({ searchParams }: Props) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">템플릿 관리</h1>
+        <h3 className="text-lg font-bold">템플릿 관리</h3>
         <div className="flex items-center gap-3">
           {data && (
             <span className="text-sm text-muted-foreground">

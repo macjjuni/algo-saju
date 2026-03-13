@@ -26,8 +26,8 @@ export default async function EditTemplatePage({ params }: Props) {
     ]);
     template = templateRes;
     categories = categoriesRes;
-  } catch {
-    // 백엔드 미구현 시 null
+  } catch (error) {
+    console.error("템플릿 조회 실패:", error);
   }
 
   return (
@@ -36,7 +36,7 @@ export default async function EditTemplatePage({ params }: Props) {
         <ArrowLeft className="h-4 w-4" />
         템플릿 목록
       </Link>
-      <h1 className="text-xl font-bold">템플릿 수정</h1>
+      <h3 className="text-lg font-bold">템플릿 수정</h3>
       {template ? (
         <TemplateForm
           templateId={templateId}

@@ -14,7 +14,7 @@ export default async function NewAnnouncementPage() {
         <ArrowLeft className="h-4 w-4" />
         공지사항 목록
       </Link>
-      <h1 className="text-xl font-bold">새 공지사항</h1>
+      <h3 className="text-lg font-bold">새 공지사항</h3>
       <AnnouncementForm />
     </div>
   );

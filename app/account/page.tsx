@@ -16,7 +16,7 @@ export default async function AccountPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-xl font-bold">회원정보</h1>
+      <h1 className="mb-6 text-lg font-bold">회원정보</h1>
       <div className="space-y-4">
         {user.image && (
           <div className="flex justify-center my-8">

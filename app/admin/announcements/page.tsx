@@ -12,14 +12,14 @@ export default async function AdminAnnouncementsPage() {
   let announcements = null;
   try {
     announcements = session.backendToken ? await getAnnouncements(session.backendToken) : null;
-  } catch {
-    // 백엔드 미구현 시 null
+  } catch (error) {
+    console.error("공지사항 목록 조회 실패:", error);
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">공지사항</h1>
+        <h3 className="text-lg font-bold">공지사항</h3>
         <Link
           href="/admin/announcements/new"
           className="inline-flex items-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"

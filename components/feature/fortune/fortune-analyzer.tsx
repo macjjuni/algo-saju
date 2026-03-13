@@ -142,14 +142,14 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
             const disabledDuo = !isSolo && !selected && selectedProfileIds.length >= MAX_DUO_PROFILES
 
             return (
-              <button
+              <Button
                 key={profile.id}
-                type="button"
+                variant="ghost"
                 onClick={() => handleSelect(profile.id)}
                 disabled={disabledDuo}
-                className={`flex w-full items-center gap-4 rounded-xl border px-4 py-3 cursor-pointer text-left transition-colors ${
+                className={`flex w-full h-auto items-center gap-4 rounded-xl border px-4 py-3 text-left ${
                   selected
-                    ? 'border-white/70 bg-white/15'
+                    ? 'border-white/70 bg-white/15 hover:bg-white/15'
                     : disabledDuo
                       ? 'border-white/5 bg-white/[0.02] opacity-40 cursor-not-allowed'
                       : 'border-white/10 bg-white/5 hover:bg-white/10'
@@ -171,7 +171,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
                     {selectedProfileIds.indexOf(profile.id) + 1}
                   </span>
                 )}
-              </button>
+              </Button>
             )
           })}
         </div>

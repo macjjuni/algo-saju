@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import type { Announcement } from "@/api/admin";
 import { deleteAnnouncementAction } from "@/app/admin/announcements/actions";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -81,13 +82,9 @@ export default function AnnouncementList({ announcements }: AnnouncementListProp
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
-                  <button
-                    onClick={() => handleDelete(a.id)}
-                    disabled={isPending}
-                    className="rounded p-1.5 hover:bg-white/10 text-red-400 disabled:opacity-50"
-                  >
+                  <Button variant="ghost" size="icon-sm" onClick={() => handleDelete(a.id)} disabled={isPending} className="text-red-400">
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>

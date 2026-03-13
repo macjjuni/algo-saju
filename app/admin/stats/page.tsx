@@ -19,13 +19,13 @@ export default async function AdminStatsPage() {
         getTemplateStats(session.backendToken),
       ]);
     }
-  } catch {
-    // 백엔드 미구현 시 null
+  } catch (error) {
+    console.error("통계 데이터 조회 실패:", error);
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-lg font-semibold mb-3">통계 대시보드</h1>
+      <h3 className="text-lg font-semibold mb-3">통계 대시보드</h3>
       {stats ? (
         <>
           <StatsCards

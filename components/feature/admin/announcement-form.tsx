@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { announcementSchema, type AnnouncementFormValues } from "@/lib/admin-schema";
 import { createAnnouncementAction, updateAnnouncementAction } from "@/app/admin/announcements/actions";
+import { Button } from "@/components/ui/button";
 
 interface AnnouncementFormProps {
   announcementId?: number;
@@ -87,20 +88,12 @@ export default function AnnouncementForm({ announcementId, defaultValues }: Anno
       </div>
 
       <div className="flex gap-2">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
-        >
+        <Button type="submit" disabled={isPending}>
           {isPending ? "저장 중..." : isEditMode ? "수정" : "생성"}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5"
-        >
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           취소
-        </button>
+        </Button>
       </div>
     </form>
   );

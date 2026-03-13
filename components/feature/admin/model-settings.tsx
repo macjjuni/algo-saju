@@ -45,13 +45,13 @@ export default function ModelSettings({ currentModel, models }: ModelSettingsPro
             const isSelected = selectedModel === model;
             const isCurrent = savedModel === model;
             return (
-              <button
+              <Button
                 key={model}
-                type="button"
+                variant="ghost"
                 onClick={() => setSelectedModel(model)}
-                className={`w-full flex items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${
+                className={`w-full h-auto flex items-center gap-3 rounded-lg border px-4 py-3 text-left ${
                   isSelected
-                    ? "border-primary bg-primary/10"
+                    ? "border-primary bg-primary/10 hover:bg-primary/10"
                     : "border-white/10 bg-white/5 hover:bg-white/10"
                 }`}
               >
@@ -66,7 +66,7 @@ export default function ModelSettings({ currentModel, models }: ModelSettingsPro
                   </div>
                 </div>
                 {isSelected && <Check className="h-4 w-4 text-primary shrink-0" />}
-              </button>
+              </Button>
             );
           })}
         </div>

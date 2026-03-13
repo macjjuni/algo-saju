@@ -22,7 +22,7 @@ export default async function ProfileListPage() {
     <>
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-bold">프로필 관리</h1>
+          <h3 className="text-lg font-bold">프로필 관리</h3>
           <p className="text-sm text-muted-foreground mt-1">{profiles.length} / {MAX_PROFILES}명</p>
         </div>
         <ProfileAddButton count={profiles.length} />
