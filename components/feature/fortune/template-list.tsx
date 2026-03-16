@@ -4,7 +4,7 @@ import { useState } from 'react'
 import type { PromptTemplate } from '@/api/fortune'
 import type { Profile } from '@/api/profile'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import FortuneAnalyzer from '@/components/feature/fortune/fortune-analyzer'
 
 interface TemplateListProps {
@@ -50,17 +50,17 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
       <h1 className="mb-6 text-lg font-bold">템플릿 선택</h1>
       <div className="flex flex-col gap-3">
         {templates.map((template) => (
-          <Button
+          <Card
             key={template.promptTemplateId}
-            variant="ghost"
             onClick={() => handleTemplateClick(template)}
-            className="flex flex-col items-start gap-2 max-sm:gap-1 h-auto rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-left hover:bg-white/10"
+            className="cursor-pointer !justify-start gap-2 max-sm:gap-1 rounded-2xl border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
+            style={{ minHeight: 102 }}
           >
             <span className="font-bold text-xl max-sm:text-lg">{template.title}</span>
             {template.description && (
-              <span className="text-sm text-muted-foreground">{template.description}</span>
+              <span className="text-sm text-muted-foreground whitespace-pre-wrap break-words">{template.description}</span>
             )}
-          </Button>
+          </Card>
         ))}
       </div>
 
