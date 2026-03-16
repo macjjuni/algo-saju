@@ -53,8 +53,7 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
           <Card
             key={template.promptTemplateId}
             onClick={() => handleTemplateClick(template)}
-            className="cursor-pointer !justify-start gap-2 max-sm:gap-1 rounded-2xl border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
-            style={{ minHeight: 102 }}
+            className="min-h-[102px] cursor-pointer gap-2 max-sm:gap-1 rounded-2xl border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
           >
             <span className="font-bold text-xl max-sm:text-lg">{template.title}</span>
             {template.description && (
