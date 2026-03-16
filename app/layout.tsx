@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { auth } from "@/lib/auth";
 import QueryProvider from "@/providers/query-provider";
 import SessionProvider from "@/providers/session-provider";
@@ -7,12 +7,17 @@ import Starfield from "@/components/background/starfield";
 import FortuneLoadingOverlay from "@/components/feature/fortune/loading-overlay";
 import { Toaster } from "@/components/ui/sonner";
 import GoogleAnalytics from "@/components/analytics/google-analytics";
+import SwRegister from "@/components/pwa/sw-register";
 import "./globals.css";
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "알고사주";
 const siteUrl = "https://www.algosaju.app";
 const description =
   "AI 알고리즘으로 운세를 분석합니다. 연애운, 재물운, 건강운 등 다양한 운세를 하루 3회 무료로 확인하세요.";
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -61,6 +66,7 @@ export default async function RootLayout({
     <html lang="ko">
       <body className="antialiased bg-black text-white">
         <GoogleAnalytics />
+        <SwRegister />
         <Starfield />
         <SessionProvider session={session}>
           <QueryProvider>
