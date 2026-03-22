@@ -46,7 +46,7 @@ export default async function ProfileListPage() {
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{profile.name || '이름 없음'}</p>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {formatBirth(profile)} · {profile.gender === 'M' ? '남' : '여'} · {profile.cityName}
+                  {formatBirth(profile)}{profile.isLunar ? ' (음력)' : ''} · {profile.gender === 'M' ? '남' : '여'} · {profile.cityName}
                 </p>
               </div>
               <div className="flex items-center shrink-0">

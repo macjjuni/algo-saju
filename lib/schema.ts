@@ -9,6 +9,8 @@ export const birthFormSchema = z.object({
   minute: z.number().int().min(0).max(59),
   gender: z.enum(["M", "F"]),
   unknownTime: z.boolean(),
+  isLunar: z.boolean(),
+  isLeapMonth: z.boolean(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   cityName: z.string().min(1, "출생 위치를 선택해주세요"),

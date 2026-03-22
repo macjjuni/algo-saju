@@ -51,6 +51,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
     minute: profile.minute,
     gender: profile.gender,
     unknownTime: profile.unknownTime,
+    isLunar: profile.isLunar ?? false,
     latitude: profile.latitude,
     longitude: profile.longitude,
     cityName: profile.cityName,

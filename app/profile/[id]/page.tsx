@@ -17,7 +17,13 @@ export default async function EditProfilePage({ params }: { params: Promise<{ id
   return (
     <ProfileFormPage
       title="프로필 수정"
-      defaultValues={{ ...profile, privacyConsent: true }}
+      defaultValues={{
+        ...profile,
+        isLunar: profile.isLunar ?? false,
+        isLeapMonth: profile.isLunar && profile.month < 0,
+        month: Math.abs(profile.month),
+        privacyConsent: true,
+      }}
       profileId={id}
       submitLabel="수정하기"
     />

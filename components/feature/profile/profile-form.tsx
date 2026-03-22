@@ -22,7 +22,8 @@ import { CreateProfileRequest } from '@/api/profile'
 // region [Privates]
 const CURRENT_YEAR = new Date().getFullYear();
 
-function getDaysInMonth(year: number, month: number): number {
+function getDaysInMonth(year: number, month: number, isLunar: boolean): number {
+  if (isLunar) return 30;
   return new Date(year, month, 0).getDate();
 }
 
@@ -40,6 +41,8 @@ const DEFAULT_VALUES: BirthFormValues = {
   minute: 0,
   gender: "M",
   unknownTime: false,
+  isLunar: false,
+  isLeapMonth: false,
   latitude: 37.5665,
   longitude: 126.978,
   cityName: "서울",
@@ -67,6 +70,8 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
   const year = watch("year");
   const month = watch("month");
   const unknownTime = watch("unknownTime");
+  const isLunar = watch("isLunar");
+  const isLeapMonth = watch("isLeapMonth");
   const gender = watch("gender");
   const cityName = watch("cityName");
   const latitude = watch("latitude");
@@ -75,8 +80,8 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
 
   // region [Privates]
   const dayOptions = useMemo(
-    () => Array.from({ length: getDaysInMonth(year, month) }, (_, i) => i + 1),
-    [year, month],
+    () => Array.from({ length: getDaysInMonth(year, month, isLunar) }, (_, i) => i + 1),
+    [year, month, isLunar],
   );
   // endregion
 
@@ -84,14 +89,21 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
   function onChangeYear(y: string) {
     const numY = Number(y);
     setValue("year", numY);
-    const maxDay = getDaysInMonth(numY, month);
+    const maxDay = getDaysInMonth(numY, month, isLunar);
     if (watch("day") > maxDay) setValue("day", maxDay);
   }
 
   function onChangeMonth(m: string) {
     const numM = Number(m);
     setValue("month", numM);
-    const maxDay = getDaysInMonth(year, numM);
+    const maxDay = getDaysInMonth(year, numM, isLunar);
+    if (watch("day") > maxDay) setValue("day", maxDay);
+  }
+
+  function onChangeLunar(checked: boolean) {
+    setValue("isLunar", checked);
+    if (!checked) setValue("isLeapMonth", false);
+    const maxDay = getDaysInMonth(year, month, checked);
     if (watch("day") > maxDay) setValue("day", maxDay);
   }
 
@@ -103,7 +115,10 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
 
   function onFormSubmit(data: BirthFormValues) {
     startTransition(async () => {
-      const { privacyConsent: _privacyConsent, ...payload } = data;
+      const { privacyConsent: _privacyConsent, isLeapMonth: leap, ...payload } = data;
+      if (payload.isLunar && leap) {
+        payload.month = -Math.abs(payload.month);
+      }
       await onSubmit(payload);
     });
   }
@@ -124,7 +139,17 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
 
       {/* 생년월일 */}
       <section className="space-y-4">
-        <Label className="text-sm font-medium">생년월일 (양력)</Label>
+        <div className="flex items-center justify-between">
+          <Label className="text-sm font-medium">생년월일 ({isLunar ? "음력" : "양력"})</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="is-lunar" className="text-sm text-muted-foreground">음력</Label>
+            <Switch
+              id="is-lunar"
+              checked={isLunar}
+              onCheckedChange={onChangeLunar}
+            />
+          </div>
+        </div>
         <div className="grid grid-cols-3 gap-3">
           <Select value={String(year)} onValueChange={onChangeYear}>
             <SelectTrigger><SelectValue placeholder="년도" /></SelectTrigger>
@@ -152,6 +177,17 @@ export default function ProfileForm({ defaultValues, onSubmit, submitLabel = "�
           </Select>
         </div>
         {errors.day && <p className="text-xs text-destructive">{errors.day.message}</p>}
+        {isLunar && (
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              className="h-4 w-4 rounded border border-white/20 accent-primary"
+              checked={isLeapMonth}
+              onChange={(e) => setValue("isLeapMonth", e.target.checked)}
+            />
+            <span className="text-sm text-muted-foreground">윤달</span>
+          </label>
+        )}
       </section>
 
       {/* 태어난 시간 */}

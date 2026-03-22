@@ -12,6 +12,7 @@ export interface Profile {
   minute: number;
   gender: Gender;
   unknownTime: boolean;
+  isLunar: boolean;
   latitude: number;
   longitude: number;
   cityName: string;
@@ -28,6 +29,7 @@ export interface CreateProfileRequest {
   minute: number;
   gender: Gender;
   unknownTime: boolean;
+  isLunar: boolean;
   latitude: number;
   longitude: number;
   cityName: string;

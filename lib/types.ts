@@ -13,6 +13,7 @@ export interface BirthForm {
   minute: number;
   gender: Gender;
   unknownTime: boolean;
+  isLunar: boolean;
   latitude: number;
   longitude: number;
   cityName: string;

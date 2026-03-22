@@ -41,7 +41,8 @@ export function formatBirth(p: {
   minute: number;
   unknownTime: boolean;
 }): string {
-  const date = `${p.year}.${String(p.month).padStart(2, '0')}.${String(p.day).padStart(2, '0')}`;
+  const absMonth = Math.abs(p.month);
+  const date = `${p.year}.${String(absMonth).padStart(2, '0')}.${String(p.day).padStart(2, '0')}`;
   if (p.unknownTime) return `${date} (시간 미상)`;
   return `${date} ${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`;
 }
