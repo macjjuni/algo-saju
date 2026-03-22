@@ -1,14 +1,9 @@
 import { unstable_cache } from "next/cache";
-import { apiClient, authHeaders } from "@/lib/api-client";
+import { apiClient, ApiError, authHeaders, type ErrorCode } from "@/lib/api-client";
 
 export interface FortuneRequest {
   chartData: string;
   promptTemplateId: number;
-}
-
-export interface FortuneResponse {
-  id: number;
-  result: string;
 }
 
 export interface PromptTemplate {
@@ -27,12 +22,31 @@ export interface Category {
   isActive: boolean;
 }
 
-export async function requestFortune(token: string, body: FortuneRequest): Promise<FortuneResponse> {
-  return apiClient<FortuneResponse>("/api/v1/fortune", {
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
+
+export async function requestFortuneStream(token: string, body: FortuneRequest): Promise<Response> {
+  const res = await fetch(`${API_URL}/api/v1/fortune`, {
     method: "POST",
-    headers: authHeaders(token),
-    body,
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "text/event-stream",
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(body),
   });
+
+  if (!res.ok) {
+    let code: ErrorCode = "INTERNAL_ERROR";
+    let message = `API ${res.status}: ${res.statusText}`;
+    try {
+      const errBody = await res.json();
+      if (errBody?.code) code = errBody.code;
+      if (errBody?.message) message = errBody.message;
+    } catch { /* ignore */ }
+    throw new ApiError(res.status, code, message);
+  }
+
+  return res;
 }
 
 const FOUR_HOURS = 4 * 60 * 60;

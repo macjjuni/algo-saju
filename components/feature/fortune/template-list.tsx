@@ -3,28 +3,25 @@
 import { useState } from 'react'
 import type { PromptTemplate } from '@/api/fortune'
 import type { Profile } from '@/api/profile'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Card } from '@/components/ui/card'
 import FortuneAnalyzer from '@/components/feature/fortune/fortune-analyzer'
 
 interface TemplateListProps {
   templates: PromptTemplate[]
   profiles: Profile[]
-  categoryId: string
 }
 
 export default function TemplateList({ templates, profiles }: TemplateListProps) {
   // region [Hooks]
   const [selectedTemplate, setSelectedTemplate] = useState<PromptTemplate | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   // endregion
 
   // region [Events]
   const handleTemplateClick = (template: PromptTemplate) => {
     setSelectedTemplate(template)
     setDialogOpen(true)
-    setError(null)
   }
 
   const handleOpenChange = (open: boolean) => {
@@ -42,11 +39,6 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
 
   return (
     <>
-      {error && (
-        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-          {error}
-        </div>
-      )}
       <h1 className="mb-6 text-lg font-bold">템플릿 선택</h1>
       <div className="flex flex-col gap-3">
         {templates.map((template) => (
@@ -74,7 +66,6 @@ export default function TemplateList({ templates, profiles }: TemplateListProps)
               templateId={selectedTemplate.promptTemplateId}
               isSolo={selectedTemplate.isSolo}
               onAnalyzeStart={() => setDialogOpen(false)}
-              onError={setError}
             />
           )}
         </DialogContent>

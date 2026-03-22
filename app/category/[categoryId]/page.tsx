@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <SidebarLayout title="운세 카테고리" menuItems={menuItems}>
-      <TemplateList templates={templates} profiles={profiles} categoryId={categoryId} />
+      <TemplateList templates={templates} profiles={profiles} />
     </SidebarLayout>
   )
 }

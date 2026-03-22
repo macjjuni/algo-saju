@@ -8,9 +8,10 @@ import aiAnimation from '@/public/lotties/ai.json'
 export default memo(function FortuneLoadingOverlay() {
   // region [Hooks]
   const loading = useFortuneStore((s) => s.loading)
+  const encryptedData = useFortuneStore((s) => s.encryptedData)
   // endregion
 
-  if (!loading) return null
+  if (!loading || encryptedData) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">

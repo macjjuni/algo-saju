@@ -1,13 +1,12 @@
 "use client";
 
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { UserRound, UserRoundPlus } from 'lucide-react'
 import type { Profile } from '@/api/profile'
 import type { BirthForm } from '@/lib/types'
 import { Button } from '@/components/ui/button'
-import { analyzeFortuneAction } from '@/app/category/[categoryId]/actions'
 import { encrypt } from '@/lib/crypto'
 import { formatBirth } from '@/lib/format'
 import useFortuneStore from '@/store/useFortuneStore'
@@ -17,21 +16,21 @@ interface FortuneAnalyzerProps {
   templateId: number
   isSolo: boolean
   onAnalyzeStart?: () => void
-  onError?: (message: string) => void
 }
 
 const MAX_DUO_PROFILES = 2
 
-export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyzeStart, onError }: FortuneAnalyzerProps) {
+export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyzeStart }: FortuneAnalyzerProps) {
   // region [Hooks]
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
     isSolo && profiles.length === 1 ? profiles[0].id : null
   )
   const [selectedProfileIds, setSelectedProfileIds] = useState<string[]>([])
   const setLoading = useFortuneStore((s) => s.setLoading)
-  const setResult = useFortuneStore((s) => s.setResult)
+  const setStreamRequest = useFortuneStore((s) => s.setStreamRequest)
   const loading = useFortuneStore((s) => s.loading)
   const router = useRouter()
+  const lastAnalyzeTime = useRef(0)
   // endregion
 
   // region [Privates]
@@ -58,9 +57,6 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
   })
   // endregion
 
-  const lastAnalyzeTime = useRef(0)
-  // endregion
-
   // region [Events]
   const handleSelectSolo = (id: string) => {
     setSelectedProfileId(id)
@@ -79,7 +75,7 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
     else handleSelectDuo(id)
   }
 
-  const handleAnalyze = useCallback(async () => {
+  const handleAnalyze = async () => {
     const now = Date.now()
     if (now - lastAnalyzeTime.current < 3000) return
     lastAnalyzeTime.current = now
@@ -92,20 +88,13 @@ export default function FortuneAnalyzer({ profiles, templateId, isSolo, onAnalyz
       .filter((p): p is Profile => !!p)
       .map((p) => profileToBirthForm(p))
 
-    setLoading(true)
     onAnalyzeStart?.()
 
     const encryptedData = await encrypt(JSON.stringify(birthForms))
-    const res = await analyzeFortuneAction(encryptedData, templateId)
-
-    if (!res.success) {
-      setLoading(false)
-      onError?.(res.error)
-    } else {
-      setResult(res.data)
-      router.push('/fortune/result')
-    }
-  }, [isSolo, selectedProfileId, selectedProfileIds, templateId, setLoading, setResult, router, onAnalyzeStart, onError])
+    setStreamRequest(encryptedData, templateId)
+    setLoading(true)
+    router.push('/fortune/result')
+  }
   // endregion
 
   if (profiles.length === 0) {
