@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import CityPicker from "./city-picker";
-import { CreateProfileRequest } from '@/api/profile'
+import { CreateProfileRequest } from '@/services/profile'
 
 // region [Privates]
 const CURRENT_YEAR = new Date().getFullYear();

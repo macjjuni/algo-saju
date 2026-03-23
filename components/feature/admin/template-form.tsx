@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { promptTemplateSchema, type PromptTemplateFormValues } from "@/lib/admin-schema";
 import { createPromptTemplateAction, updatePromptTemplateAction } from "@/app/admin/templates/actions";
-import type { Category } from "@/api/fortune";
+import type { Category } from "@/services/fortune";
 import Alert from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

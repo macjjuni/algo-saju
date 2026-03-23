@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getCategories } from "@/api/fortune";
+import { getCategories } from "@/services/fortune";
 import TemplateForm from "@/components/feature/admin/template-form";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

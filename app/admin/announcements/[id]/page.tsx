@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAnnouncement } from "@/api/admin";
+import { getAnnouncement } from "@/services/admin";
 import AnnouncementForm from "@/components/feature/admin/announcement-form";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

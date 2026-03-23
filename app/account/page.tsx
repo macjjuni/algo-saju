@@ -1,5 +1,5 @@
 import { auth } from '@/lib/auth'
-import { getMe } from '@/api/auth'
+import { getMe } from '@/services/auth'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import InfoCard from '@/components/feature/account/info-card'

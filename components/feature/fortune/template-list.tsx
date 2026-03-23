@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from 'react'
-import type { PromptTemplate } from '@/api/fortune'
-import type { Profile } from '@/api/profile'
+import type { PromptTemplate } from '@/services/fortune'
+import type { Profile } from '@/services/profile'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Card } from '@/components/ui/card'
 import FortuneAnalyzer from '@/components/feature/fortune/fortune-analyzer'

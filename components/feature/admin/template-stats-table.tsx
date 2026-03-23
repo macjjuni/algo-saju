@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { CategoryStatItem } from "@/api/admin";
+import type { CategoryStatItem } from "@/services/admin";
 import { Button } from "@/components/ui/button";
 
 interface TemplateStatsTableProps {

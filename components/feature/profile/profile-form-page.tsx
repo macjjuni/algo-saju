@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
-import type { CreateProfileRequest } from '@/api/profile'
+import type { CreateProfileRequest } from '@/services/profile'
 import type { BirthFormValues } from '@/lib/schema'
 import ProfileForm from './profile-form'
 

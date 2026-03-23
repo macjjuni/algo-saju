@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAdminUser, type AdminUserDetail } from "@/api/admin";
+import { getAdminUser, type AdminUserDetail } from "@/services/admin";
 import { ApiError } from "@/lib/api-client";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

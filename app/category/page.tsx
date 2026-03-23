@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { icons } from 'lucide-react'
-import { getCategories } from '@/api/fortune'
+import { getCategories } from '@/services/fortune'
 import GlassPanel from '@/components/ui/glass-panel'
 
 export const metadata = {

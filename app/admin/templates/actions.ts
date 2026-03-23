@@ -9,7 +9,7 @@ import {
   deletePromptTemplate,
   type AdminPromptTemplateCreateRequest,
   type AdminPromptTemplateUpdateRequest,
-} from "@/api/admin";
+} from "@/services/admin";
 import type { ActionResult } from "@/lib/types";
 
 export async function createPromptTemplateAction(data: AdminPromptTemplateCreateRequest): Promise<ActionResult> {

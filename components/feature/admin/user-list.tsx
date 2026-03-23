@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { AdminUser } from "@/api/admin";
+import type { AdminUser } from "@/services/admin";
 import { maskString } from "@/lib/format";
 import { usePagination } from "@/hooks/use-pagination";
 import Pagination from "@/components/ui/pagination";

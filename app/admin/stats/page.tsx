@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAdminStats, getTemplateStats } from "@/api/admin";
-import type { AdminStats, CategoryStatItem } from "@/api/admin";
+import { getAdminStats, getTemplateStats } from "@/services/admin";
+import type { AdminStats, CategoryStatItem } from "@/services/admin";
 import StatsCards from "@/components/feature/admin/stats-cards";
 import StatsChart from "@/components/feature/admin/stats-chart";
 import TemplateStatsTable from "@/components/feature/admin/template-stats-table";

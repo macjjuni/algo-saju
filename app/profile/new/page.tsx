@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { getProfiles } from "@/api/profile";
+import { getProfiles } from "@/services/profile";
 import { MAX_PROFILES } from "@/lib/constants";
 import ProfileFormPage from "@/components/feature/profile/profile-form-page";
 

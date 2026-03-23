@@ -8,7 +8,7 @@ import {
   deleteProfile,
   type CreateProfileRequest,
   type UpdateProfileRequest,
-} from "@/api/profile";
+} from "@/services/profile";
 import type { ActionResult } from "@/lib/types";
 
 export async function createProfileAction(data: CreateProfileRequest): Promise<ActionResult> {

@@ -8,7 +8,7 @@ import {
   deleteAnnouncement,
   type CreateAnnouncementRequest,
   type UpdateAnnouncementRequest,
-} from "@/api/admin";
+} from "@/services/admin";
 import type { ActionResult } from "@/lib/types";
 
 export async function createAnnouncementAction(data: CreateAnnouncementRequest): Promise<ActionResult> {

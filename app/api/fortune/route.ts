@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { ApiError } from '@/lib/api-client'
-import { requestFortuneStream } from '@/api/fortune'
+import { requestFortuneStream } from '@/services/fortune'
 import { buildChartData } from '@/lib/build-chart-data'
 import { decrypt } from '@/lib/crypto'
 import type { BirthForm } from '@/lib/types'

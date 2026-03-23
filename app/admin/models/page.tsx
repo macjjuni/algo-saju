@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getGeminiModel } from "@/api/admin";
-import type { GeminiModelResponse } from "@/api/admin";
+import { getGeminiModel } from "@/services/admin";
+import type { GeminiModelResponse } from "@/services/admin";
 import ModelSettings from "@/components/feature/admin/model-settings";
 
 export default async function AdminModelsPage() {

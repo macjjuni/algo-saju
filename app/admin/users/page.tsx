@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/admin";
 import { redirect } from "next/navigation";
-import { getAdminUsers, type AdminUsersResponse } from "@/api/admin";
+import { getAdminUsers, type AdminUsersResponse } from "@/services/admin";
 import { ApiError } from "@/lib/api-client";
 import { parsePaginationParams } from "@/lib/pagination";
 import UserSearchForm from "@/components/feature/admin/user-search-form";

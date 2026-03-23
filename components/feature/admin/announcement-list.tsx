@@ -4,7 +4,7 @@ import { useCallback, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
-import type { Announcement } from "@/api/admin";
+import type { Announcement } from "@/services/admin";
 import { deleteAnnouncementAction } from "@/app/admin/announcements/actions";
 import { Button } from "@/components/ui/button";
 import {

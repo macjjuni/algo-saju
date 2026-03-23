@@ -2,7 +2,7 @@
 
 import { auth, signOut } from "@/lib/auth";
 import { ApiError } from "@/lib/api-client";
-import { deleteMe } from "@/api/auth";
+import { deleteMe } from "@/services/auth";
 import type { ActionResult } from "@/lib/types";
 
 export async function withdrawAction(): Promise<ActionResult> {

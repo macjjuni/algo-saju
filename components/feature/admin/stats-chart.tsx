@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import type { DailyStat } from "@/api/admin";
+import type { DailyStat } from "@/services/admin";
 
 interface StatsChartProps {
   dailyStats: DailyStat[];

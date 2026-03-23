@@ -1,7 +1,7 @@
 "use server";
 
 import { requireAdmin } from "@/lib/admin";
-import { updateGeminiModel } from "@/api/admin";
+import { updateGeminiModel } from "@/services/admin";
 import { ApiError } from "@/lib/api-client";
 
 type ErrorCode = "UNAUTHORIZED" | "API_ERROR" | "UNKNOWN";

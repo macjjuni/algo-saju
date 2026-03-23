@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Sparkles, Star, Brain, Users } from 'lucide-react'
 import { auth } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
-import { getTotalFortuneCalls } from '@/api/stats'
+import { getTotalFortuneCalls } from '@/services/stats'
 
 export default async function Home() {
   const [session, totalFortuneCalls] = await Promise.all([auth(), getTotalFortuneCalls()])
