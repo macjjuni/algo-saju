@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-const protectedPaths = ["/profile", "/category"];
+const protectedPaths = ["/profile"];
 
 function getAdminEmails(): string[] {
   const raw = process.env.ADMIN_EMAILS ?? "";

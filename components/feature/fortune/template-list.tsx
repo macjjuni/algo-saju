@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import type { PromptTemplate } from '@/services/fortune'
 import type { Profile } from '@/services/profile'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -10,16 +11,22 @@ import FortuneAnalyzer from '@/components/feature/fortune/fortune-analyzer'
 interface TemplateListProps {
   templates: PromptTemplate[]
   profiles: Profile[]
+  isAuthenticated: boolean
 }
 
-export default function TemplateList({ templates, profiles }: TemplateListProps) {
+export default function TemplateList({ templates, profiles, isAuthenticated }: TemplateListProps) {
   // region [Hooks]
+  const router = useRouter()
   const [selectedTemplate, setSelectedTemplate] = useState<PromptTemplate | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   // endregion
 
   // region [Events]
   const handleTemplateClick = (template: PromptTemplate) => {
+    if (!isAuthenticated) {
+      router.push('/login')
+      return
+    }
     setSelectedTemplate(template)
     setDialogOpen(true)
   }

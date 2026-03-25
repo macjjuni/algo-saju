@@ -14,8 +14,11 @@ interface HeaderProps {
   isAuthenticated: boolean;
 }
 
-const menuItems = [
+const publicMenuItems = [
   { href: '/category', label: '운세 카테고리' },
+];
+
+const authMenuItems = [
   { href: '/profile', label: '프로필 관리' },
   { href: '/account', label: '내 정보' },
 ];
@@ -58,7 +61,7 @@ export default function Header({ isAuthenticated }: HeaderProps) {
 
         {/* Desktop Navigation */}
         <nav className="ml-auto hidden md:flex items-center gap-4">
-          {isAuthenticated && menuItems.map((item) => (
+          {[...publicMenuItems, ...(isAuthenticated ? authMenuItems : [])].map((item) => (
             <Link key={item.href} href={item.href} className={`text-sm transition-colors ${pathname.startsWith(item.href) ? 'text-foreground underline underline-offset-4' : 'text-foreground/70 hover:text-foreground'}`}>
               {item.label}
             </Link>
@@ -82,7 +85,7 @@ export default function Header({ isAuthenticated }: HeaderProps) {
       {mobileMenuOpen && (
           <nav className="md:hidden border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
-              {isAuthenticated && menuItems.map((item) => (
+              {[...publicMenuItems, ...(isAuthenticated ? authMenuItems : [])].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

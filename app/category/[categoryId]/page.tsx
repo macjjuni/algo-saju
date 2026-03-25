@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { getTemplates, getCategories } from '@/services/fortune'
 import { getProfiles } from '@/services/profile'
@@ -16,8 +16,6 @@ interface Props {
 
 export default async function CategoryPage({ params }: Props) {
   const session = await auth()
-  if (!session?.backendToken) redirect('/login')
-
   const { categoryId } = await params
 
   let templates
@@ -30,7 +28,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!templates || templates.length === 0) notFound()
 
   const [profiles, categories] = await Promise.all([
-    getProfiles(session.backendToken),
+    session?.backendToken ? getProfiles(session.backendToken) : Promise.resolve([]),
     getCategories(),
   ])
 
@@ -45,7 +43,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <SidebarLayout title="운세 카테고리" menuItems={menuItems}>
-      <TemplateList templates={templates} profiles={profiles} />
+      <TemplateList templates={templates} profiles={profiles} isAuthenticated={!!session} />
     </SidebarLayout>
   )
 }
