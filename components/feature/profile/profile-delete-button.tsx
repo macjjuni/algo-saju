@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { deleteProfileAction } from "@/app/profile/actions";
+import { handleUnauthorized } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -29,6 +30,7 @@ export default function ProfileDeleteButton({ id }: { id: string }) {
     const res = await deleteProfileAction(id);
     setPending(false);
     if (!res.success) {
+      if (handleUnauthorized(res)) return;
       toast.error(res.error);
       return;
     }

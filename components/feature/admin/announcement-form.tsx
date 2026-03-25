@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { announcementSchema, type AnnouncementFormValues } from "@/lib/admin-schema";
 import { createAnnouncementAction, updateAnnouncementAction } from "@/app/admin/announcements/actions";
+import { handleUnauthorized } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 
 interface AnnouncementFormProps {
@@ -43,6 +44,7 @@ export default function AnnouncementForm({ announcementId, defaultValues }: Anno
           router.push("/admin/announcements");
           router.refresh();
         } else {
+          if (handleUnauthorized(result)) return;
           alert(result.error);
         }
       });

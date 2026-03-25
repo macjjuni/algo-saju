@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { updateGeminiModelAction } from "@/app/admin/models/actions";
+import { handleUnauthorized } from "@/lib/handle-unauthorized";
 
 interface ModelSettingsProps {
   currentModel: string | null;
@@ -25,6 +26,7 @@ export default function ModelSettings({ currentModel, models }: ModelSettingsPro
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
       } else {
+        if (handleUnauthorized(result)) return;
         alert(result.error);
       }
     });

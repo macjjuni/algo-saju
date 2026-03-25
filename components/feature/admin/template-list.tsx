@@ -7,6 +7,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { AdminPromptTemplate } from "@/services/admin";
 import type { Category } from "@/services/fortune";
 import { deletePromptTemplateAction } from "@/app/admin/templates/actions";
+import { handleUnauthorized } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 import { usePagination } from "@/hooks/use-pagination";
 import Pagination from "@/components/ui/pagination";
@@ -50,6 +51,7 @@ export default function TemplateList({ templates, totalCount, page, pageSize, ca
         if (result.success) {
           router.refresh();
         } else {
+          if (handleUnauthorized(result)) return;
           alert(result.error);
         }
       });

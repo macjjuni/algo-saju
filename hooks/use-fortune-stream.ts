@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { signIn } from 'next-auth/react'
 import useFortuneStore from '@/store/useFortuneStore'
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -42,6 +43,10 @@ export default function useFortuneStream() {
         })
 
         if (!res.ok) {
+          if (res.status === 401) {
+            signIn('google')
+            return
+          }
           const errorBody = await res.json().catch(() => null)
           setError(getErrorMessage(errorBody?.code, errorBody?.message))
           return

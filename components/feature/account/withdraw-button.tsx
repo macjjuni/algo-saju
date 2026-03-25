@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { withdrawAction } from "@/app/account/withdraw/actions";
+import { handleUnauthorized } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,6 +26,7 @@ export default function WithdrawButton() {
     setPending(true);
     const res = await withdrawAction();
     if (!res.success) {
+      if (handleUnauthorized(res)) return;
       toast.error(res.error);
       setPending(false);
       return;
