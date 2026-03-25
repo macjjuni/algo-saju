@@ -5,16 +5,24 @@ import { signIn } from "next-auth/react"
 interface FailedResult {
   success: false
   code: string
+  error: string
 }
 
+type SuccessResult = { success: true } & Record<string, unknown>
+
+type ActionResultLike = SuccessResult | FailedResult
+
 /**
- * 서버 액션 결과가 UNAUTHORIZED이면 Google 재로그인을 트리거한다.
- * 재로그인이 트리거되면 true를 반환하므로 호출부에서 early return 가능.
+ * 서버 액션을 실행하고, UNAUTHORIZED 응답 시 자동으로 Google 재로그인을 트리거한다.
+ * 정상 결과 또는 UNAUTHORIZED 외 에러는 그대로 반환한다.
  */
-export function handleUnauthorized(result: FailedResult): boolean {
-  if (result.code === "UNAUTHORIZED") {
+export async function safeAction<R extends ActionResultLike, A extends unknown[]>(
+  action: (...args: A) => Promise<R>,
+  ...args: A
+): Promise<R> {
+  const result = await action(...args)
+  if (!result.success && result.code === "UNAUTHORIZED") {
     signIn("google")
-    return true
   }
-  return false
+  return result
 }

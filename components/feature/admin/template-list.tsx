@@ -7,7 +7,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { AdminPromptTemplate } from "@/services/admin";
 import type { Category } from "@/services/fortune";
 import { deletePromptTemplateAction } from "@/app/admin/templates/actions";
-import { handleUnauthorized } from "@/lib/handle-unauthorized";
+import { safeAction } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 import { usePagination } from "@/hooks/use-pagination";
 import Pagination from "@/components/ui/pagination";
@@ -47,11 +47,10 @@ export default function TemplateList({ templates, totalCount, page, pageSize, ca
     (id: number) => {
       if (!confirm("정말 삭제하시겠습니까?")) return;
       startTransition(async () => {
-        const result = await deletePromptTemplateAction(id);
+        const result = await safeAction(deletePromptTemplateAction, id);
         if (result.success) {
           router.refresh();
         } else {
-          if (handleUnauthorized(result)) return;
           alert(result.error);
         }
       });

@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { promptTemplateSchema, type PromptTemplateFormValues } from "@/lib/admin-schema";
 import { createPromptTemplateAction, updatePromptTemplateAction } from "@/app/admin/templates/actions";
-import { handleUnauthorized } from "@/lib/handle-unauthorized";
+import { safeAction } from "@/lib/handle-unauthorized";
 import type { Category } from "@/services/fortune";
 import Alert from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -60,8 +60,8 @@ export default function TemplateForm({ templateId, categories, defaultValues }: 
     (data: PromptTemplateFormValues) => {
       startTransition(async () => {
         const result = isEditMode
-          ? await updatePromptTemplateAction(templateId, data)
-          : await createPromptTemplateAction(data);
+          ? await safeAction(updatePromptTemplateAction, templateId, data)
+          : await safeAction(createPromptTemplateAction, data);
         if (result.success) {
           router.push("/admin/templates");
           router.refresh();

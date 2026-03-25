@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import type { Announcement } from "@/services/admin";
 import { deleteAnnouncementAction } from "@/app/admin/announcements/actions";
-import { handleUnauthorized } from "@/lib/handle-unauthorized";
+import { safeAction } from "@/lib/handle-unauthorized";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -32,11 +32,10 @@ export default function AnnouncementList({ announcements }: AnnouncementListProp
     (id: number) => {
       if (!confirm("정말 삭제하시겠습니까?")) return;
       startTransition(async () => {
-        const result = await deleteAnnouncementAction(id);
+        const result = await safeAction(deleteAnnouncementAction, id);
         if (result.success) {
           router.refresh();
         } else {
-          if (handleUnauthorized(result)) return;
           alert(result.error);
         }
       });

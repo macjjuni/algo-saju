@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { createProfileAction, updateProfileAction } from '@/app/profile/actions'
-import { handleUnauthorized } from '@/lib/handle-unauthorized'
+import { safeAction } from '@/lib/handle-unauthorized'
 import type { CreateProfileRequest } from '@/services/profile'
 import type { BirthFormValues } from '@/lib/schema'
 import ProfileForm from './profile-form'
@@ -23,11 +23,10 @@ export default function ProfileFormPage({ title, defaultValues, profileId, submi
   // region [Events]
   async function onSubmit(data: CreateProfileRequest) {
     const res = profileId
-      ? await updateProfileAction(profileId, data)
-      : await createProfileAction(data)
+      ? await safeAction(updateProfileAction, profileId, data)
+      : await safeAction(createProfileAction, data)
 
     if (!res.success) {
-      if (handleUnauthorized(res)) return
       toast.error(res.error)
       return
     }
