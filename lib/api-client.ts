@@ -1,3 +1,6 @@
+import "server-only";
+import { signOut } from "@/lib/auth";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export type ErrorCode =
@@ -44,6 +47,9 @@ export async function apiClient<T>(
   }
 
   if (!res.ok) {
+    if (res.status === 401) {
+      await signOut({ redirectTo: "/login" });
+    }
     let code: ErrorCode = "INTERNAL_ERROR";
     let message = `API ${res.status}: ${res.statusText}`;
     try {
