@@ -25,6 +25,7 @@ export default async function AdminUsersPage({ searchParams }: Props) {
       data = await getAdminUsers(session.backendToken, { page, pageSize, search });
     }
   } catch (err) {
+    if (err instanceof Error && "digest" in err) throw err;
     error = err instanceof ApiError ? err.message : "사용자 데이터를 불러올 수 없습니다.";
   }
   console.log(data)

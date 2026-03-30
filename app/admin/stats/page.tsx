@@ -20,6 +20,7 @@ export default async function AdminStatsPage() {
       ]);
     }
   } catch (error) {
+    if (error instanceof Error && "digest" in error) throw error;
     console.error("통계 데이터 조회 실패:", error);
   }
 

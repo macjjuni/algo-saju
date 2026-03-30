@@ -13,6 +13,7 @@ export default async function AdminAnnouncementsPage() {
   try {
     announcements = session.backendToken ? await getAnnouncements(session.backendToken) : null;
   } catch (error) {
+    if (error instanceof Error && "digest" in error) throw error;
     console.error("공지사항 목록 조회 실패:", error);
   }
 

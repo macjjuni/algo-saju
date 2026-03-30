@@ -14,6 +14,7 @@ export default async function AdminModelsPage() {
       data = await getGeminiModel(session.backendToken);
     }
   } catch (e) {
+    if (e instanceof Error && "digest" in e) throw e;
     console.error("[AdminModelsPage] 모델 정보 로드 실패:", e);
   }
 

@@ -1,5 +1,5 @@
 import "server-only";
-import { signOut } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -48,7 +48,7 @@ export async function apiClient<T>(
 
   if (!res.ok) {
     if (res.status === 401) {
-      await signOut({ redirectTo: "/login" });
+      redirect("/api/force-signout");
     }
     let code: ErrorCode = "INTERNAL_ERROR";
     let message = `API ${res.status}: ${res.statusText}`;

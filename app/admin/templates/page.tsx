@@ -33,6 +33,7 @@ export default async function AdminTemplatesPage({ searchParams }: Props) {
     data = templatesRes;
     categories = categoriesRes;
   } catch (err) {
+    if (err instanceof Error && "digest" in err) throw err;
     error = err instanceof ApiError ? err.message : "템플릿을 불러올 수 없습니다.";
   }
 
