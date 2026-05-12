@@ -10,6 +10,7 @@ import GlassPanel from '@/components/ui/glass-panel'
 import useFortuneStore from '@/store/useFortuneStore'
 import useFortuneStream from '@/hooks/use-fortune-stream'
 import { useCopy } from '@/hooks/use-copy'
+import { useTypewriter } from '@/hooks/use-typewriter'
 
 function highlightQuoted(children: ReactNode): ReactNode {
   return Array.isArray(children) ? children.map((child, i) => typeof child === 'string' ? highlightSingle(child, i) : child)
@@ -41,6 +42,7 @@ export default function FortuneResultPage() {
 
   // region [Privates]
   const displayText = result || streamingResult
+  const typedText = useTypewriter(displayText)
   const isStreaming = loading && !!streamingResult
   const isComplete = !!result && !loading
   const hasPendingRequest = !!encryptedData
@@ -103,13 +105,13 @@ export default function FortuneResultPage() {
           <p>이 분석 결과는 1회성이며, 페이지를 이탈하면 다시 확인할 수 없습니다. 필요 시 결과를 복사해 보관해 주세요.</p>
         </Alert>
         <div className="rounded-xl border border-white/10 bg-white/5 max-sm:p-3 p-10">
-          {displayText ? (
+          {typedText ? (
             <div className="prose prose-sm prose-invert max-w-none prose-headings:text-foreground prose-p:text-[16px] prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-[16px] prose-li:text-foreground/90">
               <Markdown components={{
                 p: ({ children }) => <p>{highlightQuoted(children)}</p>,
                 li: ({ children }) => <li>{highlightQuoted(children)}</li>,
                 strong: ({ children }) => <strong>{highlightQuoted(children)}</strong>,
-              }}>{displayText}</Markdown>
+              }}>{typedText}</Markdown>
             </div>
           ) : (
             <div className="flex items-center justify-center py-12">
