@@ -1,15 +1,15 @@
 "use client"
 
-import { useState, useEffect, type ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import Markdown from 'react-markdown'
 import { Compass, Copy, Check, TriangleAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/ui/alert'
 import GlassPanel from '@/components/ui/glass-panel'
-import { copyToClipboard } from '@/lib/utils'
 import useFortuneStore from '@/store/useFortuneStore'
 import useFortuneStream from '@/hooks/use-fortune-stream'
+import { useCopy } from '@/hooks/use-copy'
 
 function highlightQuoted(children: ReactNode): ReactNode {
   return Array.isArray(children) ? children.map((child, i) => typeof child === 'string' ? highlightSingle(child, i) : child)
@@ -35,7 +35,7 @@ export default function FortuneResultPage() {
   const error = useFortuneStore((s) => s.error)
   const clear = useFortuneStore((s) => s.clear)
   const router = useRouter()
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopy()
   useFortuneStream()
   // endregion
 
@@ -63,10 +63,7 @@ export default function FortuneResultPage() {
   // region [Events]
   const handleCopy = async () => {
     if (!result) return
-    const success = await copyToClipboard(result)
-    if (!success) return
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    await copy(result)
   }
 
   const handleCategory = () => {
